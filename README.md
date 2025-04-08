@@ -88,7 +88,7 @@ Framework de mutation testing: **StrykerJS** (ajută la evaluarea calității te
     
     ```npx stryker run```
 
-    Stryker va modifica codul sursă al aplicației (va crea mutanți), va rula testele și va raporta dacă testele au reușit să identifice mutanții.
+    StrykerJS va modifica codul sursă al aplicației (va crea mutanți), va rula testele și va raporta dacă testele au reușit să identifice mutanții.
 
 ## Testare Funcții
 
