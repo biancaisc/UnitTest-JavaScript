@@ -27,7 +27,7 @@ Aplicația oferă funcții de căutare și organizarea cărților pe categorii, 
 Framework de testare: **Jest** ( are suport activ, necesita o configurare minima si este de preferat pentru aplicatii web care folosesc React)
 - https://jestjs.io/docs/getting-started
 - https://www.geeksforgeeks.org/testing-with-jest/
-- https://devhints.io/jest\
+- https://devhints.io/jest
 - https://www.geeksforgeeks.org/how-to-test-react-components-using-jest/
 - https://medium.com/@dilip.bhaidiya/mastering-react-js-testing-with-jest-a-comprehensive-guide-1acada2b9586
 
