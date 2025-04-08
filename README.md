@@ -29,6 +29,8 @@ Aplicația oferă funcții de căutare și organizarea cărților pe categorii, 
 
 ### Link aplicație
 
+https://github.com/unibuc-cs/software-engineering-product-code-girls
+
 ## Testarea Funcțională
 Metodă de testare software care verifică dacă aplicația se comportă conform specificațiilor. Se concentrează pe „ce ar trebui să facă” aplicația, nu pe „cum este implementată”.
 
@@ -50,27 +52,45 @@ Scopul acestei tehnici este de a evalua eficiența testelor: dacă un test nu de
 ## Tehnologii utilizate
 
 Framework de testare: **Jest** ( are suport activ, necesita o configurare minima si este de preferat pentru aplicatii web care folosesc React)
+
 Framework de mutation testing: **StrykerJS** (ajută la evaluarea calității testelor existente, introducând modificări minore în cod și verificând dacă testele pot detecta aceste schimbări)
 
 ## Setup pentru testare cu Jest
 
-1. Instalare Jest
-
-    ```npm install --save-dev jest```
-
-2. Configurare script pentru testare
-
-   În fișierul **package.json** (din folderul ***backend***) se adaugă un script pentru a rula testele cu Jest:
-   ![image](https://github.com/user-attachments/assets/042e4f26-50cc-4a38-b9f9-d8ba3d3109c3)
+ 1. Instalare Jest
+ 
+     ```npm install --save-dev jest```
+ 
+ 2. Configurare script pentru testare
+ 
+    În fișierul **package.json** (din folderul ***backend***) se adaugă un script pentru a rula testele cu Jest:
+    ![image](https://github.com/user-attachments/assets/042e4f26-50cc-4a38-b9f9-d8ba3d3109c3)
+    
+ 3. Director teste
+ 
+    Pentru fiecare tip de testare includem fișierele de test specifice pentru fiecare funcție. Folderul ***functional_tests*** include fișierele de testare funcțională pentru funcțiile alese.
+    
+ 4. Rularea testelor
+ 
+    ```npm test```
    
-3. Director teste
+## Setup pentru testare cu StrykerJS
+ 
+ 1. Instalare și inițializare StrykerJS
+ 
+     ```npm init stryker```
 
-   Pentru fiecare tip de testare includem fișierele de test specifice pentru fiecare funcție. Folderul ***functional_tests*** include fișierele de testare funcțională pentru funcțiile alese.
-   
-4. Rularea testelor
+     Aceasta va crea un fișier de configurare ***stryker.conf.js***.
+    
+ 2. Rulare StrykerJS
 
-   ```npm test```
-## Setup pentru testare cu Stryker
+    Pentru a rula mutation testing cu StrykerJS, se folosește comanda:
+    
+    ```npx stryker run```
+
+    Stryker va modifica codul sursă al aplicației (va crea mutanți), va rula testele și va raporta dacă testele au reușit să identifice mutanții.
+
+## Testare Funcții
 
 ## Bibliografie
 - https://jestjs.io/docs/getting-started
