@@ -99,6 +99,7 @@ Framework de mutation testing: **StrykerJS** (ajută la evaluarea calității te
 - https://www.geeksforgeeks.org/how-to-test-react-components-using-jest/
 - https://medium.com/@dilip.bhaidiya/mastering-react-js-testing-with-jest-a-comprehensive-guide-1acada2b9586
 - https://stryker-mutator.io/docs/stryker-js/introduction/
+- https://yumasoft.pl/how-to-use-strykerjs-with-jest-and-typescript-3/
   
 
 
