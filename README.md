@@ -48,7 +48,11 @@ Metodă de testare a calității testelor, care presupune introducerea unor modi
 
 Scopul acestei tehnici este de a evalua eficiența testelor: dacă un test nu detectează o modificare introdusă în cod, aceasta indică faptul că testul nu este suficient de robust sau acoperitor. Testarea de mutanți este folosită pentru a îmbunătăți calitatea și completitudinea suitei de teste.
 
+## Testare cu Mock
+Metoda de testare software care simulează comportamentul dependențelor sau componentelor externe, permitand astfel testarea izolată a unor părți specifice adin cod.
 
+**Cum am folosit in proiect ->**
+Prin înlocuirea dependențelor reale cu obiecte simulate, am testat functional fara a utiliza servicii externe precum baza de date.
 ## Tehnologii utilizate
 
 Framework de testare: **Jest** ( are suport activ, necesita o configurare minima si este de preferat pentru aplicatii web care folosesc React)
