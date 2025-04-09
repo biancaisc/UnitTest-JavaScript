@@ -175,6 +175,7 @@ Am împărțit funcția în mai multe cazuri:
  - dacă rating-ul este mai mic decât 1 și book_id este null: atunci funcția ar trebui să returneze statusul 400 și mesajul 'All fields are required!';
  - dacă rating-ul este mai mare decât 5 și book_id este null: atunci funcția ar trebui să returneze statusul 400 și mesajul 'All fields are required!';
  - dacă rating-ul este null: atunci funcția ar trebui să returneze statusul 400 și mesajul 'All fields are required!';
+ - daca book_id este null: atunci funcția ar trebui să returneze statusul 400 și mesajul 'All fields are required!';
 
 Se disting următoarele categorii:
 
