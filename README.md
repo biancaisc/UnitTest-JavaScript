@@ -108,6 +108,11 @@ Am împărțit funcția în mai multe cazuri:
  - datele sunt corecte: atunci funcția ar trebui să returneze statusul 201 și să returneze textul: 'Comment added succesfully!';
  - datele nu sunt corecte pentru că nu este dat book_id: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'All fields are required!';
  - datele nu sunt corecte pentru că nu este dat content: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'All fields are required!';
+
+Intrări:
+ - user_id 
+ - book_id pentru comment (poate fi dat un book_id valid sau null)
+ - content pentru comment (poate fi dat un content valid sau null)
    
 Partiționare în categorii:
 
@@ -143,6 +148,9 @@ Am împărțit funcția în mai multe cazuri:
  - totul merge bine: atunci funcția ar trebui să returneze statusul 200 și o listă de comentarii;
  - nu sunt comentarii pentru acea cartea introdusă: atunci funcția ar trebui să returneze statusul 404 și mesajul: 'No comments found for this book!';
  - dacă apare o eroare neprevăzută: atunci funcția ar trebui să returneze statusul 500 și mesajul: 'Error fetching comments!';
+
+Intrări:
+ - book_id
 
 Se disting următoarele categorii:
 
@@ -265,16 +273,19 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
       Se identifică trei categorii:
 
       a) Categorii pentru validatatea user_id-ului:
+     
          - user_id valid (număr)
          - user_id invalid (caractere ne-numerice)
          - user_id lipsă
 
       b) Categorii pentru starea bazei de date
+     
          - există cărțile asociate în baza de date
          - nu există cărțile asociate în baza de date
          - eroare la baza de date
 
       c) Categorii pentru răspunsul sistemului
+     
          - state code 200
          - state code 404
          - state code 400
