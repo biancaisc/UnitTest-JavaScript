@@ -137,8 +137,8 @@ Partiționare de echivalență:
     E₄ = { (book_id, content) | book_id ∈ ¬B ∧ content ∈ ¬C } → 400 cu mesajul 'All fields are required!'
 
 **Domeniul de ieșiri**
-       - status cod 201 cu mesaj de succes
-       - status cod 400 cu mesaj de eroare cu toate câmpurile sunt obligatorii
+   - status cod 201 cu mesaj de succes
+   - status cod 400 cu mesaj de eroare cu toate câmpurile sunt obligatorii
 
 ## Teste pentru get comments
 
@@ -160,9 +160,9 @@ Partiționare de echivalență:
     C₁₃ = { book_id | book_id ∈ B₃ } → 500 cu mesajul 'Error fetching comments!'
 
 **Domeniul de ieșiri**
-       - status cod 200 și o listă de comentarii
-       - status cod 404 cu mesaj de eroare care să spună că nu au fost adăugate comentarii pentru cartea respectivă
-       - status cod 500 cu mesaj de eroare 
+   - status cod 200 și o listă de comentarii
+   - status cod 404 cu mesaj de eroare care să spună că nu au fost adăugate comentarii pentru cartea respectivă
+   - status cod 500 cu mesaj de eroare 
 
 ## Teste pentru post reviews
 
