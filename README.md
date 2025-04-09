@@ -278,6 +278,11 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
          - state code 404
          - state code 400
          - state code 500
+     
+ ### Rezultate teste
+ ![image](https://github.com/user-attachments/assets/5692ca35-209b-418e-b80a-2d5068df0764)
+
+    
 
 ## Bibliografie
 - https://jestjs.io/docs/getting-started
