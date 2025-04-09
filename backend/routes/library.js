@@ -15,24 +15,22 @@ router.get("/", (req, res) => {
   }
 });
 
-router.get("/id/:user_id", (req, res) => {
-    const { user_id } = req.params; 
+router.get("/id/:user_id?", (req, res) => {
+    const { user_id } = req.params;
+
+    if (!user_id) {
+        console.error("Invalid user id provided.");
+        return res.status(400).send("Invalid user ID.");
+    }
+
     const q = "SELECT * FROM library WHERE user_id = ?";
 
     try {
-
-        if (!user_id) {
-            console.error("Invalid user id provided.");
-            return res.status(400).send("Invalid user ID.");
-        }
-
-
         const book = db.prepare(q).all(user_id);
 
-        if (book) {
-            return res.json(book);
+        if (book && book.length > 0) {
+            return res.status(200).json(book);
         } else {
-
             res.status(404).send(`No books found for user with ID ${user_id}.`);
         }
     } catch (error) {
@@ -46,7 +44,7 @@ router.get("/:user_id/:book_id", (req, res) => {
     const q = "SELECT * FROM library WHERE user_id = ? AND book_id = ?";
 
     try {
-        if( !book_id) {
+        if(!book_id) {
             return res.status(440).send("Invalid user or book id.");
         }
         const book = db.prepare(q).get(user_id, book_id);
