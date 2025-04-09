@@ -197,8 +197,8 @@ Partiționare de echivalență:
     C₁₇ = { (rating, book_id, _) | rating ∈ R_null } → 400, 'All fields are required!'
 
 **Domeniul de ieșiri**
-       - status cod 201 și un mesaj de succes
-       - status cod 400 cu mesaj de eroare
+  - status cod 201 și un mesaj de succes
+  - status cod 400 cu mesaj de eroare
 
    - Partiționare de echivalență (equivalence partitioning)
       
