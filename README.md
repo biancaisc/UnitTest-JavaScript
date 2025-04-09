@@ -273,16 +273,19 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
       Se identifică trei categorii:
 
       a) Categorii pentru validatatea user_id-ului:
+     
          - user_id valid (număr)
          - user_id invalid (caractere ne-numerice)
          - user_id lipsă
 
       b) Categorii pentru starea bazei de date
+     
          - există cărțile asociate în baza de date
          - nu există cărțile asociate în baza de date
          - eroare la baza de date
 
       c) Categorii pentru răspunsul sistemului
+     
          - state code 200
          - state code 404
          - state code 400
