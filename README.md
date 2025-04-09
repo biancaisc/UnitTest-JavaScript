@@ -115,7 +115,26 @@ Am împărțit funcția în mai multe cazuri:
  - datele nu sunt corecte pentru că nu este dat book_id: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'All fields are required!';
  - datele nu sunt corecte pentru că nu este dat content: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'All fields are required!';
    
+Partiționare în categorii:
+
+Se disting următoarele categorii:
+
+a) Existența sau absența book_id
+
+B = { book_id | book_id este prezent }
+¬B = { book_id | book_id este lipsă }
+
+b) Existența sau absența content
+
+C = { content | content este prezent }
+¬C = { content | content este lipsă }
+
 Partiționare de echivalență:
+
+E₁ = { (book_id, content) | book_id ∈ B ∧ content ∈ C } → 201 cu mesajul 'Comment added successfully!'
+E₂ = { (book_id, content) | book_id ∈ ¬B ∧ content ∈ C } → 400 cu mesajul 'All fields are required!'
+E₃ = { (book_id, content) | book_id ∈ B ∧ content ∈ ¬C } → 400 cu mesajul 'All fields are required!'
+E₄ = { (book_id, content) | book_id ∈ ¬B ∧ content ∈ ¬C } → 400 cu mesajul 'All fields are required!'
 
 **Domeniul de ieșiri**
        - status cod 201 cu mesaj de succes
@@ -128,7 +147,17 @@ Am împărțit funcția în mai multe cazuri:
  - nu sunt comentarii pentru acea cartea introdusă: atunci funcția ar trebui să returneze statusul 404 și mesajul: 'No comments found for this book!';
  - dacă apare o eroare neprevăzută: atunci funcția ar trebui să returneze statusul 500 și mesajul: 'Error fetching comments!';
 
+Se disting următoarele categorii:
+
+B_1 = { book_id | carte existentă și are comentarii }
+B_2 = { book_id | carte existentă dar fără comentarii }
+B_3 = { book_id | carte validă dar apare o eroare în timpul procesării }
+
 Partiționare de echivalență:
+
+C₁₁ = { book_id | book_id ∈ B₁ } → 200 cu lista de comentarii
+C₁₂ = { book_id | book_id ∈ B₂ } → 404 cu mesajul 'No comments found for this book!'
+C₁₃ = { book_id | book_id ∈ B₃ } → 500 cu mesajul 'Error fetching comments!'
 
 **Domeniul de ieșiri**
        - status cod 200 și o listă de comentarii
@@ -146,7 +175,26 @@ Am împărțit funcția în mai multe cazuri:
  - dacă rating-ul este mai mare decât 5 și book_id este null: atunci funcția ar trebui să returneze statusul 400 și mesajul 'All fields are required!';
  - dacă rating-ul este null: atunci funcția ar trebui să returneze statusul 400 și mesajul 'All fields are required!';
 
+Se disting următoarele categorii:
+
+R_valid = { rating | 1 ≤ rating ≤ 5 }
+R_lt_1 = { rating | rating < 1 }
+R_gt_5 = { rating | rating > 5 }
+R_null = { rating | rating este null }
+B_present = { book_id | book_id nu este null }
+B_null = { book_id | book_id este null }
+RV_exists = { review | review deja există }
+RV_new = { review | review nu există încă }
+
 Partiționare de echivalență:
+
+C₁₁ = { (rating, book_id, review) | rating ∈ R_valid ∧ book_id ∈ B_present ∧ review ∈ RV_new } → 201, 'Review added successfully!'
+C₁₂ = { (rating, book_id, review) | rating ∈ R_gt_5 ∧ book_id ∈ B_present } → 400, 'Rating must be a number between 1 and 5.'
+C₁₃ = { (rating, book_id, review) | rating ∈ R_lt_1 ∧ book_id ∈ B_present } → 400, 'Rating must be a number between 1 and 5.'
+C₁₄ = { (rating, book_id, review) | rating ∈ R_valid ∧ book_id ∈ B_present ∧ review ∈ RV_exists } → 400, 'You have already added a review for this book.'
+C₁₅ = { (rating, book_id, _) | rating ∈ R_lt_1 ∧ book_id ∈ B_null } → 400, 'All fields are required!'
+C₁₆ = { (rating, book_id, _) | rating ∈ R_gt_5 ∧ book_id ∈ B_null } → 400, 'All fields are required!'
+C₁₇ = { (rating, book_id, _) | rating ∈ R_null } → 400, 'All fields are required!'
 
 **Domeniul de ieșiri**
        - status cod 201 și un mesaj de succes
