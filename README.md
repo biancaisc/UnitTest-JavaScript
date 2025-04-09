@@ -101,14 +101,8 @@ Framework de mutation testing: **StrykerJS** (ajută la evaluarea calității te
     StrykerJS va modifica codul sursă al aplicației (va crea mutanți), va rula testele și va raporta dacă testele au reușit să identifice mutanții.
 
 ## Testare Funcții
-### Funcția de returnare a cărților unui utilizator
-Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care gestionează ruta **/id/:user_id?**. 
 
-![image](https://github.com/user-attachments/assets/40381bb5-5cc3-4c30-be4f-774ccea72543)
-
-1. **Testare Funcțională**
-
-## Teste pentru post comments
+### Teste pentru post comments
 
 Am împărțit funcția în mai multe cazuri: 
  - datele sunt corecte: atunci funcția ar trebui să returneze statusul 201 și să returneze textul: 'Comment added succesfully!';
@@ -144,7 +138,7 @@ Analiză valori de frontieră:
    - status cod 201 cu mesaj de succes
    - status cod 400 cu mesaj de eroare cu toate câmpurile sunt obligatorii
 
-## Teste pentru get comments
+### Teste pentru get comments
 
 Am împărțit funcția în mai multe cazuri:
  - totul merge bine: atunci funcția ar trebui să returneze statusul 200 și o listă de comentarii;
@@ -172,7 +166,7 @@ Analiză valori de frontieră:
    - status cod 404 cu mesaj de eroare care să spună că nu au fost adăugate comentarii pentru cartea respectivă
    - status cod 500 cu mesaj de eroare 
 
-## Teste pentru post reviews
+### Teste pentru post reviews
 
 Am împărțit funcția în mai multe cazuri: 
  - totul merge bine: atunci funcția ar trebui să returneze statusul 201 și mesajul 'Review added successfully!';
@@ -211,6 +205,13 @@ Analiza valori de frontieră:
 **Domeniul de ieșiri**
   - status cod 201 și un mesaj de succes
   - status cod 400 cu mesaj de eroare
+
+### Funcția de returnare a cărților unui utilizator
+Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care gestionează ruta **/id/:user_id?**. 
+
+![image](https://github.com/user-attachments/assets/40381bb5-5cc3-4c30-be4f-774ccea72543)
+
+1. **Testare Funcțională**
 
    - Partiționare de echivalență (equivalence partitioning)
       
