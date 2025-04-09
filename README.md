@@ -57,6 +57,8 @@ prin înlocuirea dependențelor reale cu obiecte simulate, am testat functional 
 
 Framework de testare: **Jest** ( are suport activ, necesita o configurare minima si este de preferat pentru aplicatii web care folosesc React)
 
+Utilizare **Babel** :  **Babel** este folosit pentru a transpila codul JavaScript modern într-un format compatibil cu mediul Node.js, permițându-ne să rulăm testele unitare pe codul backend al aplicației fără a întâmpina probleme de compatibilitate.
+
 Framework de mutation testing: **StrykerJS** (ajută la evaluarea calității testelor existente, introducând modificări minore în cod și verificând dacă testele pot detecta aceste schimbări)
 
 ## Setup pentru testare cu Jest
@@ -64,17 +66,21 @@ Framework de mutation testing: **StrykerJS** (ajută la evaluarea calității te
  1. Instalare Jest
  
      ```npm install --save-dev jest```
- 
- 2. Configurare script pentru testare
+    
+ 2. Instalare Babel
+
+     ```npm install --save-dev @babel/core @babel/preset-env babel-jest```
+    
+ 3. Configurare script pentru testare
  
     În fișierul **package.json** (din folderul ***backend***) se adaugă un script pentru a rula testele cu Jest:
     ![image](https://github.com/user-attachments/assets/042e4f26-50cc-4a38-b9f9-d8ba3d3109c3)
     
- 3. Director teste
+ 4. Director teste
  
     Pentru fiecare tip de testare includem fișierele de test specifice pentru fiecare funcție. Folderul ***functional_tests*** include fișierele de testare funcțională pentru funcțiile alese.
     
- 4. Rularea testelor
+ 5. Rularea testelor
  
     ```npm test```
    
@@ -95,6 +101,78 @@ Framework de mutation testing: **StrykerJS** (ajută la evaluarea calității te
     StrykerJS va modifica codul sursă al aplicației (va crea mutanți), va rula testele și va raporta dacă testele au reușit să identifice mutanții.
 
 ## Testare Funcții
+### Funcția de returnare a cărților unui utilizator
+Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care gestionează ruta **/id/:user_id?**. 
+
+![image](https://github.com/user-attachments/assets/40381bb5-5cc3-4c30-be4f-774ccea72543)
+
+1. **Testare Funcțională**
+    - Partiționare de echivalență (equivalence partitioning)
+      
+      **Domeniul de intrări**
+      - Există o singură intrare: ```user_id```
+
+      Se disting următoarele clase de echivalență:
+      
+      a) Clase bazate pe validatatea user_id-ului
+      
+         U_1 = { user_id | user_id este un string care poate conține orice caracter}
+      
+         U_4 = { user_id | user_id lipsă}
+      
+      b) Clase bazate pe existența cărților în baza de date pentru un user valid
+      
+         D_1 = { user_id ∈ U_1 | există ≥1 cărți asociate}
+      
+         D_2 = { user_id ∈ U_1 | nu există cărți asociate}
+      
+         D_3 = { user_id ∈ U_1 | eroare bază de date}
+
+      **Domeniul de ieșiri**
+       - status cod 200 OK cu array de cărți
+       - status cod 404 cu mesaj
+       - status cod 400 cu mesaj de eroare
+       - status cod 500 cu mesaj de eroare
+  
+      **Clase de echivalență globale**
+      
+      C_11 = { user_id | user_id ∈ U_1 ∧ user_id ∈ D_1 } → 200 cu cărți
+      
+      C_12 = { user_id | user_id ∈ U_1 ∧ user_id ∈ D_2 } → 404
+      
+      C_13 = { user_id | user_id ∈ U_1 ∧ user_id ∈ D_3 } → 500
+      
+      C_2  = { user_id | user_id ∈ U_2 } → 400
+      
+      C_3  = { user_id | user_id ∈ U_3 } → 400
+      
+      C_4  = { user_id | user_id ∈ U_4 } → 400
+
+      5 clase
+      
+    - Analiza valorilor de frontieră (boundary value analysis)
+
+      Întrucât user_id nu are limite, analiza valorilor de frontieră nu se aplică direct în cadrul testării, fiind suficientă partiționarea de echivalență.
+      
+    - Partiționarea în categorii (categorii partitioning)
+
+      Se identifică trei categorii:
+
+      a) Categorii pentru validatatea user_id-ului:
+         - user_id valid (număr)
+         - user_id invalid (caractere ne-numerice)
+         - user_id lipsă
+
+      b) Categorii pentru starea bazei de date
+         - există cărțile asociate în baza de date
+         - nu există cărțile asociate în baza de date
+         - eroare la baza de date
+
+      c) Categorii pentru răspunsul sistemului
+         - state code 200
+         - state code 404
+         - state code 400
+         - state code 500
 
 ## Bibliografie
 - https://jestjs.io/docs/getting-started
@@ -104,6 +182,7 @@ Framework de mutation testing: **StrykerJS** (ajută la evaluarea calității te
 - https://medium.com/@dilip.bhaidiya/mastering-react-js-testing-with-jest-a-comprehensive-guide-1acada2b9586
 - https://stryker-mutator.io/docs/stryker-js/introduction/
 - https://yumasoft.pl/how-to-use-strykerjs-with-jest-and-typescript-3/
+- https://jestjs.io/docs/mock-function-api
   
 
 
