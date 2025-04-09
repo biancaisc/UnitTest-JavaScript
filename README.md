@@ -107,7 +107,52 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 ![image](https://github.com/user-attachments/assets/40381bb5-5cc3-4c30-be4f-774ccea72543)
 
 1. **Testare Funcțională**
-    - Partiționare de echivalență (equivalence partitioning)
+
+## Teste pentru post comments
+
+Am împărțit funcția în mai multe cazuri: 
+ - datele sunt corecte: atunci funcția ar trebui să returneze statusul 201 și să returneze textul: 'Comment added succesfully!';
+ - datele nu sunt corecte pentru că nu este dat book_id: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'All fields are required!';
+ - datele nu sunt corecte pentru că nu este dat content: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'All fields are required!';
+   
+Partiționare de echivalență:
+
+**Domeniul de ieșiri**
+       - status cod 201 cu mesaj de succes
+       - status cod 400 cu mesaj de eroare cu toate câmpurile sunt obligatorii
+
+## Teste pentru get comments
+
+Am împărțit funcția în mai multe cazuri:
+ - totul merge bine: atunci funcția ar trebui să returneze statusul 200 și o listă de comentarii;
+ - nu sunt comentarii pentru acea cartea introdusă: atunci funcția ar trebui să returneze statusul 404 și mesajul: 'No comments found for this book!';
+ - dacă apare o eroare neprevăzută: atunci funcția ar trebui să returneze statusul 500 și mesajul: 'Error fetching comments!';
+
+Partiționare de echivalență:
+
+**Domeniul de ieșiri**
+       - status cod 200 și o listă de comentarii
+       - status cod 404 cu mesaj de eroare care să spună că nu au fost adăugate comentarii pentru cartea respectivă
+       - status cod 500 cu mesaj de eroare 
+
+## Teste pentru post reviews
+
+Am împărțit funcția în mai multe cazuri: 
+ - totul merge bine: atunci funcția ar trebui să returneze statusul 201 și mesajul 'Review added successfully!';
+ - dacă rating-ul are o valoare mai mare decât 5: atunci funcția ar trebui să returneze statusul 400 și mesajul 'Rating must be a number between 1 and 5.';
+ - dacă rating-ul are o valoare mai mică decât 1: atunci funcția ar trebui să returneze statusul 400 și mesajul 'Rating must be a number between 1 and 5.';
+ - dacă review-ul există deja: atunci funcția ar trebui să returneze statusul 400 și mesajul 'You have already added a review for this book.';
+ - dacă rating-ul este mai mic decât 1 și book_id este null: atunci funcția ar trebui să returneze statusul 400 și mesajul 'All fields are required!';
+ - dacă rating-ul este mai mare decât 5 și book_id este null: atunci funcția ar trebui să returneze statusul 400 și mesajul 'All fields are required!';
+ - dacă rating-ul este null: atunci funcția ar trebui să returneze statusul 400 și mesajul 'All fields are required!';
+
+Partiționare de echivalență:
+
+**Domeniul de ieșiri**
+       - status cod 201 și un mesaj de succes
+       - status cod 400 cu mesaj de eroare
+
+   - Partiționare de echivalență (equivalence partitioning)
       
       **Domeniul de intrări**
       - Există o singură intrare: ```user_id```
@@ -150,11 +195,11 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 
       5 clase
       
-    - Analiza valorilor de frontieră (boundary value analysis)
+   - Analiza valorilor de frontieră (boundary value analysis)
 
       Întrucât user_id nu are limite, analiza valorilor de frontieră nu se aplică direct în cadrul testării, fiind suficientă partiționarea de echivalență.
       
-    - Partiționarea în categorii (categorii partitioning)
+   - Partiționarea în categorii (categorii partitioning)
 
       Se identifică trei categorii:
 
