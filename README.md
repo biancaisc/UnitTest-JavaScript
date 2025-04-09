@@ -128,7 +128,6 @@ Partiționare de echivalență:
     E₁ = { (book_id, content) | book_id ∈ B ∧ content ∈ C } → 201 cu mesajul 'Comment added successfully!'
     E₂ = { (book_id, content) | book_id ∈ ¬B ∧ content ∈ C } → 400 cu mesajul 'All fields are required!'
     E₃ = { (book_id, content) | book_id ∈ B ∧ content ∈ ¬C } → 400 cu mesajul 'All fields are required!'
-    E₄ = { (book_id, content) | book_id ∈ ¬B ∧ content ∈ ¬C } → 400 cu mesajul 'All fields are required!'
 
 Analiză valori de frontieră:
 
