@@ -120,19 +120,19 @@ Se disting următoarele categorii:
 
 a) Existența sau absența book_id
 
-    B = { book_id | book_id este prezent }
-    ¬B = { book_id | book_id este lipsă }
+    B_1 = { book_id | book_id este prezent }
+    B_2 = { book_id | book_id este lipsă }
 
 b) Existența sau absența content
 
-    C = { content | content este prezent }
-    ¬C = { content | content este lipsă }
+    C_1 = { content | content este prezent }
+    C_2 = { content | content este lipsă }
 
 Partiționare de echivalență:
 
-    E₁ = { (book_id, content) | book_id ∈ B ∧ content ∈ C } → 201 cu mesajul 'Comment added successfully!'
-    E₂ = { (book_id, content) | book_id ∈ ¬B ∧ content ∈ C } → 400 cu mesajul 'All fields are required!'
-    E₃ = { (book_id, content) | book_id ∈ B ∧ content ∈ ¬C } → 400 cu mesajul 'All fields are required!'
+    E_11 = { (book_id, content) | book_id ∈ B_1 ∧ content ∈ C_1 } → 201 cu mesajul 'Comment added successfully!'
+    E_21 = { (book_id, content) | book_id ∈ B_2 ∧ content ∈ C_1 } → 400 cu mesajul 'All fields are required!'
+    E_12 = { (book_id, content) | book_id ∈ B_1 ∧ content ∈ C_2 } → 400 cu mesajul 'All fields are required!'
 
 Analiză valori de frontieră:
 
@@ -160,9 +160,9 @@ Se disting următoarele categorii:
 
 Partiționare de echivalență:
 
-    C₁₁ = { book_id | book_id ∈ B₁ } → 200 cu lista de comentarii
-    C₁₂ = { book_id | book_id ∈ B₂ } → 404 cu mesajul 'No comments found for this book!'
-    C₁₃ = { book_id | book_id ∈ B₃ } → 500 cu mesajul 'Error fetching comments!'
+    C_1 = { book_id | book_id ∈ B_1 } → 200 cu lista de comentarii
+    C_2 = { book_id | book_id ∈ B_2 } → 404 cu mesajul 'No comments found for this book!'
+    C_3 = { book_id | book_id ∈ B_3 } → 500 cu mesajul 'Error fetching comments!'
 
 Analiză valori de frontieră:
 
