@@ -100,7 +100,7 @@ Framework de mutation testing: **StrykerJS** (ajută la evaluarea calității te
 
     StrykerJS va modifica codul sursă al aplicației (va crea mutanți), va rula testele și va raporta dacă testele au reușit să identifice mutanții.
 
-## Testare Funcții
+## Testare functionala
 
 ### Teste pentru post comments
 
@@ -174,6 +174,10 @@ Analiză valori de frontieră:
    - status cod 500 cu mesaj de eroare 
 
 ### Teste pentru post reviews
+Functia adauga un review nou
+![image](https://github.com/user-attachments/assets/54cda963-17f6-4b36-948d-48d30533d1d2)
+
+### Testare functionala
 
 Am împărțit funcția în mai multe cazuri: 
  - totul merge bine: atunci funcția ar trebui să returneze statusul 201 și mesajul 'Review added successfully!';
@@ -214,6 +218,33 @@ Analiza valori de frontieră:
   - status cod 201 și un mesaj de succes
   - status cod 400 cu mesaj de eroare
 
+## Testare structurala
+**Acoperire la nivel de instructiunie(statement coverage)**
+Fiecare instructiune din functia de creare a review-ului (router.post) este executată cel putin o data:
+
+  - instructiunile care valideaza prezenta book_id si rating
+
+  - instructiunile care valideaza daca rating este un numar între 1 și 5
+
+  - interogarea bazei de date pentru a verifica duplicatele
+
+  - inserarea unui review nou
+
+  - tratarea erorilor in cazul in care baza de date arunca exceptii
+
+**Acoperire la nivel de ramura**
+```if (!book_id || !rating) ```
+ - fiecare din cei 2 parametrii ia atat valoarea adevarat cat si fals
+
+```if (isNaN(rating) || rating < 1 || rating > 5)```
+ - se testeaza cazul cand este adevarata (rating invalid) si cand este falsa (rating valid)
+
+``` if (existingReview)```
+ - se testeaza daca review-ul exista deja sau nu; daca exista se intoarce ramura de eroare cu codul 400, altfel se insereaza in baza de date si se intoarce raspunsul 201
+
+```catch (error) ```
+  - se testeaza daca exista o eroare in baza de date
+    
 ### Funcția de returnare a cărților unui utilizator
 Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care gestionează ruta **/id/:user_id?**. 
 
@@ -291,8 +322,15 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
          - state code 400
          - state code 500
      
- ### Rezultate teste
+ ### Rezultate teste functionale
  ![image](https://github.com/user-attachments/assets/5692ca35-209b-418e-b80a-2d5068df0764)
+
+ ## Testare structurala
+
+ Pentru functia de PUT review
+![image](https://github.com/user-attachments/assets/1415c511-290a-4e97-baad-0589fca51d08)
+
+
 
     
 
