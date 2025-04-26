@@ -280,82 +280,153 @@ Am asigurat ca fiecare decizie (```if```) din cod a avut toate rezultatele posib
 
 
     
-### Funcția de returnare a cărților unui utilizator
-Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care gestionează ruta **/id/:user_id?**. 
+### Funcția de returnare a cărții unui utilizator
+Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care gestionează ruta **/:user_id/:book_id**. 
 
-![image](https://github.com/user-attachments/assets/40381bb5-5cc3-4c30-be4f-774ccea72543)
+![image](https://github.com/user-attachments/assets/c917811c-5039-4fc1-b877-a820f35b3aa9)
 
 1. **Testare Funcțională**
 
    - Partiționare de echivalență (equivalence partitioning)
       
       **Domeniul de intrări**
-      - Există o singură intrare: ```user_id```
+      - Există două intrări:
+
+        ```user_id``` - string
+        
+        ```book_id``` - string
 
       Se disting următoarele clase de echivalență:
       
       a) Clase bazate pe validatatea user_id-ului
       
-         U_1 = { user_id | user_id este un string care poate conține orice caracter}
+         U_1 = { user_id | user_id  valid - caractere numerice}
       
-         U_4 = { user_id | user_id lipsă}
+         U_2 = { user_id | user_id invalid - string gol sau conține caractere ne-numerice}
       
-      b) Clase bazate pe existența cărților în baza de date pentru un user valid
+      b) Clase bazate pe validatatea book_id-ului
       
-         D_1 = { user_id ∈ U_1 | există ≥1 cărți asociate}
+         B_1 = { book_id | book_id valid - caractere numerice}
       
-         D_2 = { user_id ∈ U_1 | nu există cărți asociate}
-      
-         D_3 = { user_id ∈ U_1 | eroare bază de date}
+         B_2 = { book_id | book_id invalid - string gol sau conține caractere ne-numerice}
 
-      **Domeniul de ieșiri**
-       - status cod 200 OK cu array de cărți
-       - status cod 404 cu mesaj
-       - status cod 400 cu mesaj de eroare
-       - status cod 500 cu mesaj de eroare
-  
+ 
+      **Domeniul de ieșiri constă din următoarele răspunsuri**
+
+         O_1 = cartea returnată dacă există în biblioteca user-ului, returnând cod 200
+       
+         O_2 = un mesaj dacă nu se găsește cartea în biblioteca user-ului, returnând cod 404
+
+         O_3 = un mesaj dacă user-ul este inexistent, returnând cod 404
+
+         O_4 =  un mesaj dacă user_id sau book_id au valori invalide, returnând cod 400
+
+         O_5 =  un mesaj dacă se produce o eroare în baza de date, indiferent de validatatea input-urilor, returnând cod 500
+    
       **Clase de echivalență globale**
       
-      C_11 = { user_id | user_id ∈ U_1 ∧ user_id ∈ D_1 } → 200 cu cărți
-      
-      C_12 = { user_id | user_id ∈ U_1 ∧ user_id ∈ D_2 } → 404
-      
-      C_13 = { user_id | user_id ∈ U_1 ∧ user_id ∈ D_3 } → 500
-      
-      C_2  = { user_id | user_id ∈ U_2 } → 400
-      
-      C_3  = { user_id | user_id ∈ U_3 } → 400
-      
-      C_4  = { user_id | user_id ∈ U_4 } → 400
+         C_111 = { (user_id,book_id) | user_id ∈ U_1, book_id ∈ B_1, ieșire = O_1 } → 200 cu cartea corespunzătoare
 
-      5 clase
+         C_112 = { (user_id,book_id) | user_id ∈ U_1, book_id ∈ B_1, ieșire = O_2 } → 404
+
+         C_113 = { (user_id,book_id) | user_id ∈ U_1, book_id ∈ B_1, ieșire = O_3 } → 404
+     
+         C_12 = { (user_id,book_id) | user_id ∈ U_1, book_id ∈ B_2, ieșire = O_4 } → 400
+
+         C_21 = { (user_id,book_id) | user_id ∈ U_2, book_id ∈ B_1, ieșire = O_4 } → 400
+ 
+         C_22 = { (user_id,book_id) | user_id ∈ U_2, book_id ∈ B_2, ieșire = O_4 } → 400
+     
+      6 clase de echivalență
+
+     | user_id | book_id | Rezultat așteptat |
+     |-------|-----------|---------|
+     | "10" | "4" | 200 + cartea asociată |
+     | "5" | "3" | 404 + mesaj: "The book is not in your library." |
+     | "6" | "10" | 404 + mesaj: "The user does not exist." |
+     | "user1" | "100" | 400 + mesaj: "Invalid user id or book id provided." |
+     | "50" | "book1" | 400 + mesaj: "Invalid user id or book id provided." |
+     | "user2" | "book2" | 400 + mesaj: "Invalid user id or book id provided." |
       
    - Analiza valorilor de frontieră (boundary value analysis)
 
-      Întrucât user_id nu are limite, analiza valorilor de frontieră nu se aplică direct în cadrul testării, fiind suficientă partiționarea de echivalență.
-      
-   - Partiționarea în categorii (categorii partitioning)
+      Nu avem limite impuse direct pentru user_id și book_id, acestea putând lua orice valori, dar putem testa cazurile limită care ar putea cauza erori:
 
-      Se identifică trei categorii:
+         - user_id și book_id au valoarea 1
+         - user_id și book_id au valori foarte mari
+         - user_id și book_id au valoarea 0
+         - user_id și book_id sunt negative
+         - user_id și book_id sunt string-uri goale
+
+     10 cazuri de testare
+
+     | user_id | book_id | Rezultat așteptat |
+     |-------|-----------|---------|
+     | "1" | "10" | 200 + cartea asociată |
+     | "5" | "1" | 200 + cartea asociată |
+     | "100000" | "10" | 200 + cartea asociată |
+     | "5" | "100000" |  200 + cartea asociată |
+     | "0" | "4" | 200 + cartea asociată |
+     | "5" | "0" | 200 + cartea asociată |
+     | "-1" | "10" | 200 + cartea asociată |
+     | "5" | "-10" | 200 + cartea asociată |
+     | " " | "5" | 200 + cartea asociată |
+     | "10" | " " | 200 + cartea asociată |
+
+      
+   - Partiționarea în categorii (category partitioning)
+
+     
+      Se identifică patru categorii:
 
       a) Categorii pentru validatatea user_id-ului:
      
          - user_id valid (număr)
-         - user_id invalid (caractere ne-numerice)
-         - user_id lipsă
-
-      b) Categorii pentru starea bazei de date
+         - user_id invalid (caractere ne-numerice, spații goale)
+       
+      b) Categorii pentru validatatea book_id-ului:
      
-         - există cărțile asociate în baza de date
-         - nu există cărțile asociate în baza de date
+         - book_id valid (număr)
+         - book_id invalid (caractere ne-numerice, spații goale)
+
+      c) Categorii pentru starea bazei de date
+     
+         - există cartea în biblioteca user-ului în baza de date
+         - nu există cartea în baza de date
+         - nu există user-ul în baza de date
+         - datele sunt invalide
          - eroare la baza de date
 
-      c) Categorii pentru răspunsul sistemului
+      d) Categorii pentru răspunsul sistemului
      
          - state code 200
          - state code 404
          - state code 400
          - state code 500
+
+      Pentru a acoperi toate alternativele, putem crea următoarele cazuri de testare:
+     
+         - user_id valid + book_id valid + carte găsită -> 200
+         - user_id valid + book_id valid + cartea nu există, dar user-ul da -> 404
+         - user_id valid + book_id valid + nici cartea, nici user-ul nu există -> 404
+         - user_id invalid + book_id valid -> 400
+         - user_id valid + book_id invalid -> 400
+         - user_id invalid + book_id invalid -> 400
+         - user_id valid + book_id valid + eroare DB -> 500
+       
+        7 cazuri de testare
+
+        | user_id | book_id | stare DB | Rezultat |
+        |-------|-----------|---------|---------|
+        | "123" | "10" | carte găsită | 200 + cartea asociată |
+        | "10" | "10" | carte nu e găsită, dar user-ul există | 404 + "The book is not in your library." |
+        | "15" | "20" | carte nu e găsită, iar user-ul nu există | 404 + "The user does not exist." |
+        | "abc1-invalid" | "5" | - | 400 + "Invalid user id or book id provided." |
+        | "30" | "book123" | - | 400 + "Invalid user id or book id provided." |
+        | " " | "a-1-2" | - | 400 + "Invalid user id or book id provided." |
+        | "100" | "101" | Eroare DB | 500 + "There is an error processing your request." |
+
+ 2. **Testare Structurală**
      
  ### Rezultate teste functionale
  ![image](https://github.com/user-attachments/assets/5692ca35-209b-418e-b80a-2d5068df0764)
