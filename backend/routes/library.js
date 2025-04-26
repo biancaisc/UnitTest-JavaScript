@@ -39,13 +39,12 @@ router.get("/id/:user_id", (req, res) => {
     }
 });
 
-router.get("/:user_id?/:book_id?", (req, res) => {
+router.get("/:user_id/:book_id", (req, res) => {
     const { user_id, book_id } = req.params;
     const q = "SELECT * FROM library WHERE user_id = ? AND book_id = ?";
-    console.log("user_id: ", user_id);
-    console.log("book_id: ", book_id);
+    
     try {
-        if(!user_id?.trim() || !book_id?.trim()) {
+        if(!user_id.trim() || !book_id.trim() || isNaN(user_id) || isNaN(book_id)){
             console.error("Invalid user id or book id provided.");
             return res.status(400).send("Invalid user id or book id provided.");
         }
