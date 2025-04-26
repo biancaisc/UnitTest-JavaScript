@@ -5,7 +5,8 @@ import { db } from '../.config.js';
 
 jest.mock('../.config.js', () => ({
     db: {
-        prepare: jest.fn()
+        prepare: jest.fn().mockReturnThis(),
+        get: jest.fn()
     }
 }));
 
@@ -13,76 +14,264 @@ const app = express();
 app.use(express.json());
 app.use("/", libraryRouter);
 
-describe("GET /id/:user_id - Functional testing", () => {
-    afterEach(() => {
-        jest.clearAllMocks();
+describe("GET /:user_id/:book_id - Functional testing", () => {
+
+    describe('1. Equivalence Partitioning Tests', () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+    
+        test('valid user_id and book_id, book exists -> should return 200 with the book', async () => {
+            db.prepare.mockReturnThis();
+            db.get.mockReturnValue({ id: 1, title: 'Test Book' });
+            
+            const response = await request(app).get('/123/1');
+            
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({ id: 1, title: 'Test Book' });
+        });
+    
+        test('valid user_id and book_id, user exists but book not found -> should return 404', async () => {
+            db.get.mockReturnValueOnce(null)  
+                .mockReturnValueOnce({ id: 1 }); 
+            
+            const response = await request(app).get('/1/1');
+            
+            expect(response.status).toBe(404);
+            expect(response.text).toBe('The book is not in your library.');
+        });
+    
+        test('valid user_id and book_id, user does not exist -> should return 404', async () => {
+            db.get.mockReturnValueOnce(null) 
+                .mockReturnValueOnce(null); 
+            
+            const response = await request(app).get('/10/2');
+            
+            expect(response.status).toBe(404);
+            expect(response.text).toBe('The user does not exist.');
+        });
+    
+        test('invalid user_id -> should return 400', async () => {
+            const response = await request(app).get('/ /2');
+            
+            expect(response.status).toBe(400);
+            expect(response.text).toBe('Invalid user id or book id provided.');
+        });
+    
+        test('invalid book_id -> should return 400', async () => {
+            const response = await request(app).get('/1/ ');
+            
+            expect(response.status).toBe(400);
+            expect(response.text).toBe('Invalid user id or book id provided.');
+        });
+
+        test('invalid user_id and book_id -> should return 400', async () => {
+            const response = await request(app).get('/ / ');   
+
+            expect(response.status).toBe(400);
+            expect(response.text).toBe('Invalid user id or book id provided.');
+        });
     });
-    test("valid user_id with books -> should return books with status 200", async () => {
-        const books = [{ id: 1, title: "Book 1" }, { id: 2, title: "Book 2" }];
-        
-        db.prepare.mockReturnValue({ all: () => books });
 
-        const res = await request(app).get("/id/123");
-        expect(db.prepare).toHaveBeenCalledWith("SELECT * FROM library WHERE user_id = ?");
-        expect(res.statusCode).toBe(200);
-        expect(res.body).toEqual(books);
+    describe('2. Boundary Value Analysis Tests', () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+    
+        test('empty string user_id -> should return 400', async () => {
+            const response = await request(app).get('/ /3');
+            
+            expect(response.status).toBe(400);
+            expect(response.text).toBe('Invalid user id or book id provided.');
+        });
+    
+        test('empty string book_id -> should return 400', async () => {
+            const response = await request(app).get('/4/');
+            
+            expect(response.status).toBe(400);
+            expect(response.text).toBe('Invalid user id or book id provided.');
+        });
+    
+        test('whitespace only user_id -> should return 400', async () => {
+            const response = await request(app).get('/ /5');
+            
+            expect(response.status).toBe(400);
+            expect(response.text).toBe('Invalid user id or book id provided.');
+        });
+    
+        test('whitespace only book_id -> should return 400', async () => {
+            const response = await request(app).get('/11/ ');
+            
+            expect(response.status).toBe(400);
+            expect(response.text).toBe('Invalid user id or book id provided.');
+        });
+    
+        test('very long user_id -> should return 200 with book', async () => {
+            db.get.mockReturnValue({ id: 1, title: 'Test Book' });
+            
+            const longId = '1'.repeat(10000);
+            const response = await request(app).get(`/${longId}/1`);
+            
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({ id: 1, title: 'Test Book' });
+        });
+    
+        test('very long book_id -> should return 200 with book', async () => {
+            db.get.mockReturnValue({ id: 1, title: 'Test Book' });
+            
+            const longId = '1'.repeat(10000);
+            const response = await request(app).get(`/123/${longId}`);
+            
+            expect(response.status).toBe(400);
+            expect(response.body).toEqual({ id: 1, title: 'Test Book' });
+        });
+    
+        test('Special characters in user_id -> should return 200 with book', async () => {
+            db.get.mockReturnValue({ id: 1, title: 'Test Book' });
+            
+            const response = await request(app).get('/user!@#$/456');
+            
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({ id: 1, title: 'Test Book' });
+        });
+    
+        test('Special characters in book_id -> should return 200 with book', async () => {
+            db.get.mockReturnValue({ id: 1, title: 'Test Book' });
+            
+            const response = await request(app).get('/123/book!@#$');
+            
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({ id: 1, title: 'Test Book' });
+        });
+
+        test('Negative number user_id -> should return 200 with book', async () => {
+            db.get.mockReturnValue({ id: 1, title: 'Test Book' });
+            
+            const response = await request(app).get('/-123/456');
+            
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({ id: 1, title: 'Test Book' });
+        });
+
+        test('Negative number book_id -> should return 200 with book', async () => {
+            db.get.mockReturnValue({ id: 1, title: 'Test Book' });
+            
+            const response = await request(app).get('/123/-456');
+            
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({ id: 1, title: 'Test Book' });
+        });
     });
 
-    test("valid user_id without books -> should return 404", async () => {
-        db.prepare.mockReturnValue({ all: () => [] });
+    describe('3. Category Partitioning Tests', () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+        
+        // Valid user_id + Valid book_id + Book found
+        test('Valid user_id, valid book_id, book found -> should return 200 with book', async () => {
+            db.get.mockReturnValue({ id: 1, title: 'Test Book' });
+            
+            const response = await request(app).get('/123/456');
+            
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({ id: 1, title: 'Test Book' });
+        });
+    
+        // Valid user_id + Valid book_id + Book not found, user exists
+        test('Valid user_id, valid book_id, book not found but user exists -> should return 404', async () => {
+            db.get.mockReturnValueOnce(null)
+                .mockReturnValueOnce({ id: 1 });
+            
+            const response = await request(app).get('/123/456');
+            
+            expect(response.status).toBe(404);
+            expect(response.text).toBe('The book is not in your library.');
+        });
+    
+        // Valid user_id + Valid book_id + Book not found, user doesn't exist
+        test('Valid user_id, valid book_id, user does not exist -> should return 404', async () => {
+            db.get.mockReturnValueOnce(null)
+                .mockReturnValueOnce(null);
+            
+            const response = await request(app).get('/123/456');
+            
+            expect(response.status).toBe(404);
+            expect(response.text).toBe('The user does not exist.');
+        });
+    
+        // Valid user_id + Valid book_id + Database error
+        test('Valid user_id, valid book_id, database error -> should return 500', async () => {
+            db.get.mockImplementation(() => { 
+                throw new Error('Database error'); 
+            });
+            
+            const response = await request(app).get('/123/456');
+            
+            expect(response.status).toBe(500);
+            expect(response.text).toBe('There is an error processing your request.');
+        });
+    
+        // Valid user_id + Empty book_id
+        test('Valid user_id, empty book_id -> should return 400', async () => {
+            const response = await request(app).get('/123/');
+            
+            expect(response.status).toBe(400);
+            expect(response.text).toBe('Invalid user id or book id provided.');
+        });
+    
+        // Empty user_id + Valid book_id
+        test('Empty user_id, valid book_id -> should return 400', async () => {
+            const response = await request(app).get('/ /456');
+            
+            expect(response.status).toBe(400);
+            expect(response.text).toBe('Invalid user id or book id provided.');
+        });
+    
+        // Whitespace user_id + Valid book_id
+        test('Whitespace user_id, valid book_id -> should return 400', async () => {
+            const response = await request(app).get('/%20/456');
+            
+            expect(response.status).toBe(400);
+            expect(response.text).toBe('Invalid user id or book id provided.');
+        });
+    
+        // Valid user_id + Whitespace book_id
+        test('Valid user_id, whitespace book_id -> should return 400', async () => {
+            const response = await request(app).get('/123/%20');
+            
+            expect(response.status).toBe(400);
+            expect(response.text).toBe('Invalid user id or book id provided.');
+        });
+    
+        // Numeric user_id + Numeric book_id
+        test('Numeric user_id, numeric book_id, book found -> should return 200 with book', async () => {
+            db.get.mockReturnValue({ id: 1, title: 'Test Book' });
+            
+            const response = await request(app).get('/123/456');
+            
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({ id: 1, title: 'Test Book' });
+        });
+    
+        // Alphanumeric user_id + Alphanumeric book_id
+        test('Alphanumeric user_id, alphanumeric book_id, book found -> should return 200 with book', async () => {
+            db.get.mockReturnValue({ id: 1, title: 'Test Book' });
+            
+            const response = await request(app).get('/user123/book456');
+            
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({ id: 1, title: 'Test Book' });
+        });
 
-        const res = await request(app).get("/id/999");
-        expect(res.statusCode).toBe(404);
-        expect(res.text).toContain("No books found for user with ID 999");
+        // Negative user_id + Negative book_id
+        test('Negative user_id, negative book_id, book found -> should return 200 with book', async () => {
+            db.get.mockReturnValue({ id: -456, title: 'Test Book' });
+            
+            const response = await request(app).get('/-123/-456');
+            
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({ id: -456, title: 'Test Book' });
+        });
     });
-
-    test("undefined user_id -> should return 400", async () => {
-        const res = await request(app).get("/id/");
-        expect(res.statusCode).toBe(400); 
-        expect(res.text).toContain("Invalid user ID.");
-    });
-
-    test('should return status code 500', async () => {
-        db.prepare.mockImplementation(() => {
-            throw new Error("DB error");
-        });
-        
-        const response = await request(app).get('/id/1');
-        
-        expect(response.status).toBe(500);
-        expect(response.text).toContain('error processing your request');
-        });
-
-    test("user_id is a string with books -> should return books with status code 200", async () => {
-            const books = [{ id: 5, title: "Book 5" }];
-            db.prepare.mockReturnValue({ all: () => books });
-
-            const res = await request(app).get("/id/abc123");
-            expect(res.statusCode).toBe(200);
-            expect(res.body).toEqual(books);
-        });
-
-    test("user_id is a string without books -> should return 404", async () => {
-            db.prepare.mockReturnValue({ all: () => [] });
-
-            const res = await request(app).get("/id/abc123");
-            expect(res.statusCode).toBe(404);
-        });
-
-    test("user_id is a negative number with books -> should return books with status code 200", async () => {
-            const books = [{ id: 6, title: "Book 6" }];
-            db.prepare.mockReturnValue({ all: () => books });
-
-            const res = await request(app).get("/id/-123");
-            expect(res.statusCode).toBe(200);
-            expect(res.body).toEqual(books);
-        });
-        
-    test("user_id is a negative number without books -> should return 404", async () => {
-            db.prepare.mockReturnValue({ all: () => [] });
-
-            const res = await request(app).get("/id/-123");
-            expect(res.statusCode).toBe(404);
-        });
-
 });
