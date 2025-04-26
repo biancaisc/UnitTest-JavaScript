@@ -218,7 +218,7 @@ Analiza valori de frontieră:
   - status cod 201 și un mesaj de succes
   - status cod 400 cu mesaj de eroare
 
-## Testare structurala
+### Testare structurala
 **Acoperire la nivel de instructiunie(statement coverage)**
 Fiecare instructiune din functia de creare a review-ului (router.post) este executată cel putin o data:
 
@@ -244,6 +244,36 @@ Fiecare instructiune din functia de creare a review-ului (router.post) este exec
 
 ```catch (error) ```
   - se testeaza daca exista o eroare in baza de date
+
+**Acoperire la nivel de conditie(condition coverage)**
+``` if (!book_id || !rating) ```
+ - sunt testate atat cat sunt true(lipsesc) cat si false(exista)
+
+```if (isNaN(rating) || rating < 1 || rating > 5) ```
+   - toate cele 3 conditii: isNaN(rating), rating < 1, rating > 5 sunt testate atunci cand trimit rating "abc", -1 si 6
+
+``` if (existingReview)```
+ - existenta unui review in baza de date este testata pentru ambele cazuri, review gasit si negasit
+
+**Acoperire la nivel de conditie/decizie**
+Am asigurat ca fiecare decizie (```if```) din cod a avut toate rezultatele posibile, si ca fiecare conditie care contribuie la decizie a avut toate valorile posibile
+
+```if (!book_id || !rating)```
+ - Decizie compusa din 2 conditii: !book_id si !rating; am testat in cod fara book_id, fara rating, cu ambele si fara niciunul
+
+```if (isNaN(rating) || rating < 1 || rating > 5)```
+ - Decizie compusa din 3 conditii: isNaN(rating), rating < 1 si rating > 5
+ - rating = "abc" → isNaN(rating) este true → raspuns 400
+ - rating = 0 → rating < 1 este true → raspuns 400
+ - rating = 6 → rating > 5 este true → raspuns 400
+ - rating = 4 → toate conditiile false → codul continua mai departe
+
+```if (existingReview)```
+- O singura conditie
+- existingReview = true -> raspuns 400
+- existingReview = false -> se continua inserarea
+
+
     
 ### Funcția de returnare a cărților unui utilizator
 Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care gestionează ruta **/id/:user_id?**. 
