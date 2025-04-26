@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
   }
 });
 
-router.get("/id/:user_id?", (req, res) => {
+router.get("/id/:user_id", (req, res) => {
     const { user_id } = req.params;
 
     if (!user_id) {
@@ -42,18 +42,25 @@ router.get("/id/:user_id?", (req, res) => {
 router.get("/:user_id/:book_id", (req, res) => {
     const { user_id, book_id } = req.params;
     const q = "SELECT * FROM library WHERE user_id = ? AND book_id = ?";
-
+    
     try {
-        if(!book_id) {
-            return res.status(440).send("Invalid user or book id.");
+        if(!user_id.trim() || !book_id.trim() || isNaN(user_id) || isNaN(book_id)){
+            console.error("Invalid user id or book id provided.");
+            return res.status(400).send("Invalid user id or book id provided.");
         }
         const book = db.prepare(q).get(user_id, book_id);
 
         if (book) {
-            res.json(book);
+            return res.status(200).json(book);
         } else {
-            return res.status(450).send("The book is not in your library.");
-     }
+            const userExists = db.prepare("SELECT * FROM library WHERE user_id = ?").get(user_id);
+            if (userExists) {
+                return res.status(404).send("The book is not in your library.");
+            }
+            else{
+                return res.status(404).send("The user does not exist.");
+            }
+        }
     } catch (error) {
         console.error("There is an error in userid+bookid : ", error.message);
         res.status(500).send("There is an error processing your request.");
