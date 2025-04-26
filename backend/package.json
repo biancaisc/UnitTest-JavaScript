@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "jest",
+    "test-coverage": "jest --coverage",
     "start": "node index.js",
     "start:prod": "cross-env NODE_ENV=production node index.js"
   },
