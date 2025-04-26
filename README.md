@@ -378,6 +378,7 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 - https://stryker-mutator.io/docs/stryker-js/introduction/
 - https://yumasoft.pl/how-to-use-strykerjs-with-jest-and-typescript-3/
 - https://jestjs.io/docs/mock-function-api
+- https://www.lambdatest.com/learning-hub/structural-testing
   
 
 
