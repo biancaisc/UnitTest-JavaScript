@@ -220,6 +220,7 @@ Analiza valori de frontieră:
 
 ### Testare structurala
 **Acoperire la nivel de instructiunie(statement coverage)**
+
 Fiecare instructiune din functia de creare a review-ului (router.post) este executată cel putin o data:
 
   - instructiunile care valideaza prezenta book_id si rating
@@ -233,6 +234,7 @@ Fiecare instructiune din functia de creare a review-ului (router.post) este exec
   - tratarea erorilor in cazul in care baza de date arunca exceptii
 
 **Acoperire la nivel de ramura**
+
 ```if (!book_id || !rating) ```
  - fiecare din cei 2 parametrii ia atat valoarea adevarat cat si fals
 
@@ -246,6 +248,7 @@ Fiecare instructiune din functia de creare a review-ului (router.post) este exec
   - se testeaza daca exista o eroare in baza de date
 
 **Acoperire la nivel de conditie(condition coverage)**
+
 ``` if (!book_id || !rating) ```
  - sunt testate atat cat sunt true(lipsesc) cat si false(exista)
 
@@ -256,9 +259,11 @@ Fiecare instructiune din functia de creare a review-ului (router.post) este exec
  - existenta unui review in baza de date este testata pentru ambele cazuri, review gasit si negasit
 
 **Acoperire la nivel de conditie/decizie**
+
 Am asigurat ca fiecare decizie (```if```) din cod a avut toate rezultatele posibile, si ca fiecare conditie care contribuie la decizie a avut toate valorile posibile
 
 ```if (!book_id || !rating)```
+
  - Decizie compusa din 2 conditii: !book_id si !rating; am testat in cod fara book_id, fara rating, cu ambele si fara niciunul
 
 ```if (isNaN(rating) || rating < 1 || rating > 5)```
