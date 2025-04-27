@@ -22,10 +22,13 @@ describe("GET /id/:user_id - Structural testing", () => {
             });
             
             test('invalid input', async () => {
+                const consoleSpy = jest.spyOn(console, 'error');
                 const response = await request(app).get('/user-invalid123/10');
                 
                 expect(response.status).toBe(400);
                 expect(response.text).toBe("Invalid user id or book id provided.");
+                expect(consoleSpy).toHaveBeenCalledWith("Invalid user id or book id provided.");
+                consoleSpy.mockRestore();
             });
     
             test('existent book', async () => {
@@ -34,7 +37,9 @@ describe("GET /id/:user_id - Structural testing", () => {
                     book_id: 1,
                     readit: true
                 });
-                db.prepare.mockReturnValue({ get: bookMoked });
+
+                const mockPrepare = jest.fn().mockReturnValue({ get: bookMoked });
+                db.prepare = mockPrepare;
     
                 const response = await request(app).get('/1/1');
                 
@@ -44,33 +49,44 @@ describe("GET /id/:user_id - Structural testing", () => {
                     book_id: 1,
                     readit: true
                 });
+                expect(mockPrepare).toHaveBeenCalledWith("SELECT * FROM library WHERE user_id = ? AND book_id = ?");
             });
 
             test('non-existent book ', async () => {
-                        const bookMoked = jest.fn()
-                            .mockReturnValueOnce(null)
-                            .mockReturnValueOnce({ user_id: 1 });
-                        db.prepare.mockReturnValue({ get: bookMoked });
-            
-                        const response = await request(app).get('/1/2');
-                        
-                        expect(response.status).toBe(404);
-                        expect(response.text).toBe("The book is not in your library.");
-                        expect(db.prepare).toHaveBeenCalledTimes(2);
+                const bookMoked = jest.fn()
+                    .mockReturnValueOnce(null)
+                    .mockReturnValueOnce({ user_id: 1 });
+               
+                const mockPrepare = jest.fn().mockReturnValue({ get: bookMoked });
+                db.prepare = mockPrepare;
+    
+                const response = await request(app).get('/1/2');
+                
+                expect(response.status).toBe(404);
+                expect(response.text).toBe("The book is not in your library.");
+                expect(db.prepare).toHaveBeenCalledTimes(2);
+                expect(mockPrepare.mock.calls[0][0]).toBe("SELECT * FROM library WHERE user_id = ? AND book_id = ?");
+                expect(mockPrepare.mock.calls[1][0]).toBe("SELECT * FROM library WHERE user_id = ?");
             });
     
             test('non-existent user', async () => {
                 const bookMoked = jest.fn().mockReturnValue(null);
-                db.prepare.mockReturnValue({ get: bookMoked });
+                
+                const mockPrepare = jest.fn().mockReturnValue({ get: bookMoked });
+                db.prepare = mockPrepare;
     
                 const response = await request(app).get('/999/1');
                 
                 expect(response.status).toBe(404);
                 expect(response.text).toBe("The user does not exist.");
+                expect(mockPrepare.mock.calls[0][0]).toBe("SELECT * FROM library WHERE user_id = ? AND book_id = ?");
+                expect(mockPrepare.mock.calls[1][0]).toBe("SELECT * FROM library WHERE user_id = ?");
             });
     
     
             test('Database Error"', async () => {
+                const consoleSpy = jest.spyOn(console, 'error');
+
                 db.prepare.mockImplementation(() => {
                     throw new Error('DB error');
                 });
@@ -79,6 +95,8 @@ describe("GET /id/:user_id - Structural testing", () => {
                 
                 expect(response.status).toBe(500);
                 expect(response.text).toBe("There is an error processing your request.");
+                expect(consoleSpy).toHaveBeenCalledWith("There is an error in userid+bookid : ", "DB error");
+                consoleSpy.mockRestore();
             });
     });
 
@@ -91,31 +109,43 @@ describe("GET /id/:user_id - Structural testing", () => {
         });
         
         test('!user_id.trim() = true', async () => {
+            const consoleSpy = jest.spyOn(console, 'error');
             const response = await request(app).get('/%20/1');
             
             expect(response.status).toBe(400);
             expect(response.text).toBe("Invalid user id or book id provided.");
+            expect(consoleSpy).toHaveBeenCalledWith("Invalid user id or book id provided.");
+            consoleSpy.mockRestore();
         });
 
         test('!book_id.trim() = true', async () => {
+            const consoleSpy = jest.spyOn(console, 'error');
             const response = await request(app).get('/1/%20');
             
             expect(response.status).toBe(400);
             expect(response.text).toBe("Invalid user id or book id provided.");
+            expect(consoleSpy).toHaveBeenCalledWith("Invalid user id or book id provided.");
+            consoleSpy.mockRestore();
         });
 
         test('isNaN(user_id) = true', async () => {
+            const consoleSpy = jest.spyOn(console, 'error');
             const response = await request(app).get('/abc/1');
             
             expect(response.status).toBe(400);
             expect(response.text).toBe("Invalid user id or book id provided.");
+            expect(consoleSpy).toHaveBeenCalledWith("Invalid user id or book id provided.");
+            consoleSpy.mockRestore();
         });
 
         test('isNaN(book_id) = true', async () => {
+            const consoleSpy = jest.spyOn(console, 'error');
             const response = await request(app).get('/1/abc');
             
             expect(response.status).toBe(400);
             expect(response.text).toBe("Invalid user id or book id provided.");
+            expect(consoleSpy).toHaveBeenCalledWith("Invalid user id or book id provided.");
+            consoleSpy.mockRestore();
         });
 
     });
