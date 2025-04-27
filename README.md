@@ -86,13 +86,23 @@ Framework de mutation testing: **StrykerJS** (ajută la evaluarea calității te
    
 ## Setup pentru testare cu StrykerJS
  
- 1. Instalare și inițializare StrykerJS
+ 1. Instalare și inițializare StrykerJS (în folderul backend)
  
      ```npm init stryker```
-
-     Aceasta va crea un fișier de configurare ***stryker.conf.js***.
     
- 2. Rulare StrykerJS
+    Se vor alege aceste opțiuni:
+    
+    ![image](https://github.com/user-attachments/assets/7d0699d2-0fa1-4b96-a684-319b748f780a)
+
+    Se va crea un fișier de configurare ***stryker.conf.js***.
+
+ 2. Configurare fișier ***stryker.conf.js***
+
+    Se adaugă manual proprietatea **mutate**, pentru ca stryker să modifice fișierele pentru care au fost configurate testele.
+
+    ```mutate: ['routes/**.js']```
+    
+ 1. Rulare StrykerJS
 
     Pentru a rula mutation testing cu StrykerJS, se folosește comanda:
     
@@ -430,14 +440,7 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
  ### Rezultate teste functionale
  ![image](https://github.com/user-attachments/assets/5692ca35-209b-418e-b80a-2d5068df0764)
 
- ## Testare structurala
 
- Pentru functia de PUT review
-![image](https://github.com/user-attachments/assets/1415c511-290a-4e97-baad-0589fca51d08)
-
-
-
-    
 
 ## Bibliografie
 - https://jestjs.io/docs/getting-started
