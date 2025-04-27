@@ -565,7 +565,69 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 
       Acestea au fost acoperite prin testele anterioare.
 
-4. **Testare de Mutanți**
+ 3. **Testare de Mutanți**
+
+    Stryker a identificat 1 fișier sursă de mutat dintr-un total de 65 fișiere.
+    
+    Au fost generate 32 de mutanți pe baza codului sursă.
+
+    Pentru rularea testelor a fost folosit test runner-ul jest cu analiză perTest pentru acoperirea codului.
+
+    Rezultate obținute:
+
+        Mutanți testați: 32/32
+        
+        Mutanți omorâți ("killed"): 21
+        
+        Mutanți care au supraviețuit ("survived"): 4
+        
+        Mutanți care au expirat timpul de execuție ("timed out"): 7
+        
+        Mutation Score: 87.5% (21 mutanți omorâți din 24 testați efectiv)
+
+    Observații:
+
+        - codul sursă testat este library.js, implicând funcționalitatea de obținere a cărților asociate unui utilizator (GET /id/:user_id)
+        
+        - testele au fost împărțite în teste funcționale (Equivalence Partitioning, Boundary Value Analysis, Category Partitioning) și teste structurale (Statement și Condition Coverage)
+        
+        - mjoritatea mutanților au fost corect detectați de teste, indicând o acoperire bună a cazurilor de eroare și a fluxurilor normale
+        
+        - mutanții supraviețuitori au fost în principal modificări asupra literalelor de string folosite în interogările SQL sau mesajele de eroare (console.error), sugerând că testele nu verifică explicit aceste mesaje sau interogări
+
+    Exemple de mutanți supraviețuitori:
+
+        - eliminarea query-ului SQL în routes/library.js:44.
+        
+        - eliminarea mesajelor de eroare în routes/library.js:48 și routes/library.js:65.
+        
+        - înlocuirea unei interogări SQL cu un string gol în routes/library.js:56.
+
+     Pentru a acoperi și mutanții supraviețuitori, ar putea fi util să adăugăm:
+
+        - teste suplimentare care verifică existența mesajelor de eroare în caz de input invalid sau erori de bază de date.
+        
+        - validări suplimentare pentru interogările SQL (dacă relevant pentru aplicație).
+       
+    Testele au rulat cu o medie de 15.97 teste pe mutant.
+    
+    Durata totală a testării de mutație: aproximativ 21 de secunde.
+    
+    Raportul complet a fost generat și salvat într-un format HTML la **reports/mutation/mutation.html**
+
+    ![image](https://github.com/user-attachments/assets/12ab5ab4-8f13-4e83-ac0c-535559b393b6)
+
+    În urma îmbunătățirii testelor, am obținut acoperirea 100% a codului testat.
+
+    ![image](https://github.com/user-attachments/assets/1862a278-05b3-4e4e-838d-794ee6973d23)
+
+    Actualizări teste:
+
+       - am adăugat un **jest.spyOn(console, 'error')** pentru a verifica afișarea mesajelor de eroare specifice
+       
+       - am creat un mock pentru **db.prepare** și am verificat apelurile pentru interogările SQL corecte 
+       
+       - am validat ordinea și conținutul apelurilor către db.prepare folosind **mock.calls**
 
  ### Rezultate teste functionale
  ![image](https://github.com/user-attachments/assets/5692ca35-209b-418e-b80a-2d5068df0764)
