@@ -36,7 +36,7 @@ Metodă de testare software care verifică dacă aplicația se comportă conform
 
 Este o formă de testare black-box, unde inputurile sunt oferite funcțiilor și se verifică dacă rezultatul este cel așteptat.
 
-## Testarea Structurală 
+## Testarea Structurală [9]
 
 Metodă de testare software care presupune cunoașterea codului sursă. Se mai numește și "white-box testing" – testăm cum funcționează codul.
 
@@ -48,26 +48,26 @@ Metodă de testare a calității testelor, care presupune introducerea unor modi
 
 Scopul acestei tehnici este de a evalua eficiența testelor: dacă un test nu detectează o modificare introdusă în cod, aceasta indică faptul că testul nu este suficient de robust sau acoperitor. Testarea de mutanți este folosită pentru a îmbunătăți calitatea și completitudinea suitei de teste.
 
-## Testare cu Mock [[8]](Bibliografie)
-Metoda de testare software care simulează comportamentul dependențelor sau componentelor externe, permitand astfel testarea izolată a unor părți specifice din cod.
+## Testare cu Mock [5]
+Metoda de testare software care simulează comportamentul dependențelor sau componentelor externe, permițând astfel testarea izolată a unor părți specifice din cod.
 
 **Cum am folosit in proiect ->**
 prin înlocuirea dependențelor reale cu obiecte simulate, am testat functional fara a utiliza servicii externe precum baza de date.
 ## Tehnologii utilizate
 
-Framework de testare: **Jest** ( are suport activ, necesita o configurare minima si este de preferat pentru aplicatii web care folosesc React)
+Framework de testare: **Jest** ( are suport activ, necesita o configurare minima si este de preferat pentru aplicatii web care folosesc React) [2]
 
-Utilizare **Babel** :  **Babel** este folosit pentru a transpila codul JavaScript modern într-un format compatibil cu mediul Node.js, permițându-ne să rulăm testele unitare pe codul backend al aplicației fără a întâmpina probleme de compatibilitate.
+Utilizare **Babel** [1] :  **Babel** este folosit pentru a transpila codul JavaScript modern într-un format compatibil cu mediul Node.js, permițându-ne să rulăm testele unitare pe codul backend al aplicației fără a întâmpina probleme de compatibilitate.
 
-Framework de mutation testing: **StrykerJS** [[6]](Bibliografie) (ajută la evaluarea calității testelor existente, introducând modificări minore în cod și verificând dacă testele pot detecta aceste schimbări)
+Framework de mutation testing: **StrykerJS** [6] (ajută la evaluarea calității testelor existente, introducând modificări minore în cod și verificând dacă testele pot detecta aceste schimbări)
 
-## Setup pentru testare cu Jest
+## Setup pentru testare cu Jest [4]
 
  1. Instalare Jest
  
      ```npm install --save-dev jest```
     
- 2. Instalare Babel
+ 2. Instalare Babel [1]
 
      ```npm install --save-dev @babel/core @babel/preset-env babel-jest```
     
@@ -84,7 +84,7 @@ Framework de mutation testing: **StrykerJS** [[6]](Bibliografie) (ajută la eval
  
     ```npm test```
    
-## Setup pentru testare cu StrykerJS [[7]](Bibliografie)
+## Setup pentru testare cu StrykerJS [7]
  
  1. Instalare și inițializare StrykerJS (în folderul backend)
  
@@ -632,11 +632,12 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 
     Actualizări teste:
 
-       - am adăugat un **jest.spyOn(console, 'error')**  [[8]](Bibliografie) pentru a verifica afișarea mesajelor de eroare specifice 
+       - am adăugat un **jest.spyOn(console, 'error')**  [8] pentru a verifica afișarea mesajelor de eroare specifice 
        
-       - am creat un mock pentru **db.prepare** și am verificat apelurile pentru interogările SQL corecte 
+       - am creat un mock pentru **db.prepare** și am verificat apelurile pentru interogările SQL corecte (`expect(fn)
+  .toHaveBeenCalledWith`) [3]
        
-       - am validat ordinea și conținutul apelurilor către db.prepare folosind **mock.calls** [[3]](Bibliografie)
+       - am validat ordinea și conținutul apelurilor către db.prepare folosind **mock.calls** [3]
 
  ### Rezultate teste functionale
  ![image](https://github.com/user-attachments/assets/5692ca35-209b-418e-b80a-2d5068df0764)
