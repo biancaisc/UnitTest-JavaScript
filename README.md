@@ -86,13 +86,23 @@ Framework de mutation testing: **StrykerJS** (ajută la evaluarea calității te
    
 ## Setup pentru testare cu StrykerJS
  
- 1. Instalare și inițializare StrykerJS
+ 1. Instalare și inițializare StrykerJS (în folderul backend)
  
      ```npm init stryker```
-
-     Aceasta va crea un fișier de configurare ***stryker.conf.js***.
     
- 2. Rulare StrykerJS
+    Se vor alege aceste opțiuni:
+    
+    ![image](https://github.com/user-attachments/assets/7d0699d2-0fa1-4b96-a684-319b748f780a)
+
+    Se va crea un fișier de configurare ***stryker.conf.js***.
+
+ 2. Configurare fișier ***stryker.conf.js***
+
+    Se adaugă manual proprietatea **mutate**, pentru ca stryker să modifice fișierele pentru care au fost configurate testele.
+
+    ```mutate: ['routes/**.js']```
+    
+ 1. Rulare StrykerJS
 
     Pentru a rula mutation testing cu StrykerJS, se folosește comanda:
     
@@ -282,8 +292,8 @@ Am asigurat ca fiecare decizie (```if```) din cod a avut toate rezultatele posib
 ### Funcția de returnare a cărții unui utilizator
 Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care gestionează ruta **/:user_id/:book_id**. 
 
+<<<<<<< HEAD
 ![functie drawio](https://github.com/user-attachments/assets/69dd71b2-1479-41aa-9558-8ad770790d8d)
-
 
 1. **Testare Funcțională**
 
@@ -321,7 +331,9 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 
          O_4 =  un mesaj dacă user_id sau book_id au valori invalide, returnând cod 400
 
+<<<<<<< HEAD
          O_5 =  un mesaj dacă se produce o eroare în baza de date, când datele sunt valide, returnând cod 500
+=======
     
       **Clase de echivalență globale**
       
@@ -426,6 +438,7 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
         | " " | "a-1-2" | - | 400 + "Invalid user id or book id provided." |
         | "100" | "101" | Eroare DB | 500 + "There is an error processing your request." |
 
+<<<<<<< HEAD
 2. **Testare Structurală**
     - **Graful de flux de control** al programului (CFG) 
 
@@ -640,6 +653,14 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 
 
     
+=======
+ 2. **Testare Structurală**
+     
+ ### Rezultate teste functionale
+ ![image](https://github.com/user-attachments/assets/5692ca35-209b-418e-b80a-2d5068df0764)
+
+
+>>>>>>> e44bd22e6319fa881beacf8af2f4174f9afcd1d4
 
 ## Bibliografie
 - https://jestjs.io/docs/getting-started

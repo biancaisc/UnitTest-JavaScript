@@ -1,4 +1,5 @@
 node_modules/
+<<<<<<< HEAD
 database/database.db
 # stryker temp files
 .stryker-tmp
