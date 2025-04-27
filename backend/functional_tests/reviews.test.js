@@ -90,6 +90,17 @@ describe('POST /reviews', () => {
     expect(response.text).toBe('All fields are required!');
     });
 
+    test('should return 400 because both book_id and review are null', async()=> {
+      const newReview = {}; 
+  
+      const response = await request(app)
+        .post('/reviews')
+        .send(newReview);
+  
+      expect(response.status).toBe(400);
+      expect(response.text).toBe('All fields are required!');
+      });
+  
   test('should return 400 because rating < 1 and book_id is null', async()=>{
     const newReview = {rating: -1}; 
     const response = await request(app)

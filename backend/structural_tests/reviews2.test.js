@@ -109,7 +109,7 @@ describe('POST /reviews', () => {
 
     const response = await request(app)
       .post('/reviews')
-      .send({ book_id: 10, rating: 4 });
+      .send({ book_id: 10, rating: 1 });
 
     expect(response.status).toBe(201);
     expect(response.text).toBe('Review added successfully!');
