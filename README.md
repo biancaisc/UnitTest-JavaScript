@@ -292,7 +292,8 @@ Am asigurat ca fiecare decizie (```if```) din cod a avut toate rezultatele posib
 ### Funcția de returnare a cărții unui utilizator
 Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care gestionează ruta **/:user_id/:book_id**. 
 
-![image](https://github.com/user-attachments/assets/c917811c-5039-4fc1-b877-a820f35b3aa9)
+<<<<<<< HEAD
+![functie drawio](https://github.com/user-attachments/assets/69dd71b2-1479-41aa-9558-8ad770790d8d)
 
 1. **Testare Funcțională**
 
@@ -330,7 +331,9 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 
          O_4 =  un mesaj dacă user_id sau book_id au valori invalide, returnând cod 400
 
-         O_5 =  un mesaj dacă se produce o eroare în baza de date, indiferent de validatatea input-urilor, returnând cod 500
+<<<<<<< HEAD
+         O_5 =  un mesaj dacă se produce o eroare în baza de date, când datele sunt valide, returnând cod 500
+=======
     
       **Clase de echivalență globale**
       
@@ -435,12 +438,229 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
         | " " | "a-1-2" | - | 400 + "Invalid user id or book id provided." |
         | "100" | "101" | Eroare DB | 500 + "There is an error processing your request." |
 
+<<<<<<< HEAD
+2. **Testare Structurală**
+    - **Graful de flux de control** al programului (CFG) 
+
+    ![graf-functie drawio (1) drawio](https://github.com/user-attachments/assets/4c626583-8af8-4881-867c-e481976a4d53)
+
+      Funcția are câteva puncte de decizie:
+
+       - verifică dacă user_id sau book_id sunt invalide
+       - verifică dacă cartea există în biblioteca user-ului
+       - verifică dacă user-ul există
+
+      Pe baza grafului se pot defini următoarele acoperiri:
+
+      a) **Acoperire la nivel de instrucțiune** (Statement coverage)
+      
+      Ne concentrăm asupra instrucțiunilor controlate de condiții, pentru ca fiecare instrucțiune(nod al grafului) să fie parcursă cel puțin o dată:
+   
+       - returnează eroare pentru input invalid
+       - returnează cartea din biblioteca user-ului
+       - returnează mesaj dacă nu există cartea în biblioteca user-ului
+       - returnează mesaj dacă user-ul nu există
+       - returnează eroare când se produce o eroare de la baza de date
+
+      | user_id | book_id | Rezultat afișat | Instrucțiuni parcurse |
+      |-------------------------------|-------------------------------------------------|--------------------------------------------------------------------------------------|--------------------------------------------------------------------|
+      | "user-invalid123" | "10" | 400 + "Invalid user id or book id provided." | 1-3 → 4 → 5-7 → 24 |
+      | "1" | "1" -cartea există | 200 + cartea găsită | 1-3 → 4 → 8-9 → 10 → 11 → 24 |
+      | "1" | "2" -cartea nu există | 404 + "The book is not in your library." | 1-3 → 4 → 8-9 → 10 → 12-13 → 14 → 15-16  → 24 |
+      | "999" -user inexistent | "1" | 404 + "The user does not exist." | 1-3 → 4 → 8-9 → 10 → 12-13 → 14 → 17-20 → 24 |
+      | "1" | "1" | 500 + "There is an error processing your request." | 1-3 → 4 -> 8-9 -> 21-23 → 24 |
+
+      b) Acoperire la nivel de decizie (Decision coverage)
+
+      Pentru fiecare decizie trebuie să testăm ieșirile care rezultă când fiecare decizie este adevarată sau falsă.
+
+      | Decizie | user_id | book_id | Output Decizie | Rezultat așteptat |
+      |------------------|-----------------|----------------|--------------|--------------------|
+      | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` | invalid | valid | adevărat | 400 + "Invalid user id or book id provided." |
+      | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` | valid | valid | fals | verificare existență carte |
+      | `if (book)` | valid | valid - carte existentă | adevărat | 200 + cartea găsită |
+      | `if (book)` | valid | valid - carte inexistentă | fals | verificare existență user |
+      | `if (userExists)`| valid - user existent | valid - carte inexistentă | adevărat | 404 + "The book is not in your library." |
+      | `if (userExists)` | valid - user inexistent | valid | fals | 404 + "The user does not exist." |
+
+      Toate rezultatele au fost deja acoperite prin testele anterioare.
+
+      c) Acoperire la nivel de condiție (Condition coverage)
+
+      Aceasta implică fiecare condiție individuală dintr-o decizie să ia atât valoarea adevărat cât și fals.
+      
+      | Decizie | Condiție individuală |
+      |-------|-----------|
+      | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` | !user_id.trim(), !book_id.trim(), isNaN(user_id), isNaN(book_id) |
+      | `if (book)` | book |
+      | `if (userExists)` | userExists |
+
+      Date de test pentru a acoperi toate condițiile: 
+
+      | user_id | book_id | Condiție acoperită | Rezultat așteptat |
+      |----------|-------------|-------------------|---------------------|
+      | " " | 1 | `!user_id.trim() = true`, restul condițiilor sunt false | 400 + "Invalid user id or book id provided." |
+      | 1 | " " | `!book_id.trim() = true`, restul condițiilor sunt false | 400 + "Invalid user id or book id provided." |
+      | "abc" | 1 | `isNaN(user_id) = true`, restul condițiilor sunt false | 400 + "Invalid user id or book id provided." |
+      | 1 | "abc" | `isNaN(book_id) = true`, restul condițiilor sunt false | 400 + "Invalid user id or book id provided." |
+      | "1" | "1" -cartea există | `book = true` | 200 + cartea găsită | 
+      | "1" | "2" -cartea nu există | `book = false` | verificare existență user |
+      | "1" - user există | "2" -cartea nu există | `userExists = true` | 404 + "The book is not in your library." |
+      | "999" -user inexistent | "1" | `userExists = false` | 404 + "The user does not exist." |
+
+      d) Acoperire la nivel de condiție/decizie
+
+      Această acoperire cere ca:
+   
+       - fiecare condiție să fie atât true cât și false
+       - fiecare decizie întreagă să fie și true și false
+
+      Testele anterioare au acoperit aceste cazuri.
+
+      e) Acoperire la nivel de condiții multiple (Multiple Condition Coverage)
+
+      Avem o decizie care cuprinde condiții multiple:
+          
+        !user_id.trim() || !book_id.trim() || isNaN(user_id) || isNaN(book_id)
+          
+      Pentru a testa toate combinațiile posibile ale condițiilor individuale, în număr de 4, ar trebui 2^4 teste, dar operatorul || se oprește la prima evaluare și putem optimiza astfel:
+
+      | user_id | book_id | Condiție acoperită |
+      |----------|-------------|-------------------
+      | " " | 1 |	`!user_id.trim() = true`, restul condițiilor sunt false |
+      | 1 | " " | `!book_id.trim() = true`, restul condițiilor sunt false |
+      | "abc" | 1 | `isNaN(user_id) = true`, restul condițiilor sunt false |
+      | 1 | "abc" | `isNaN(book_id) = true`, restul condițiilor sunt false |
+      | 1 | 1 | toate condițiile false |
+
+      Cazurile au fost acoperite prin testele anterioare.
+
+      f) Modified condition/decision (MC/DC) coverage
+      
+      Pentru fiecare condiție trebuie să vedem că poate influența decizia în mod independent.
+
+      Prin testele de la Multiple Coverage Coverage, se demonstrează că:
+      
+       - !user_id.trim() influențează singură decizia (user_id = " ")
+       - !book_id.trim() influențează singură decizia (book_id = " ")
+       - isNaN(user_id) influențează singură decizia	(user_id = "abc")
+       - isNaN(book_id) influențează singură decizia (book_id = "abc")
+          
+      g) Testarea circuitelor independente
+
+      Circuitele linear independente implică proprietatea ca nici unul să nu poate fi obținut ca o combinație a celorlalte.
+
+      Ducând un arc de la 24 la 1, obținem:
+      
+          N = 12
+          E = 15
+          V(G) = E - N + 2 = 5 circuite independente
+
+      | Circuit | Cale urmată | Descriere |
+      |----------|-------------|-------------------|
+      | C1 | 1-3 → 4 → 5-7 → 24 -> 1-3 | input invalid → return 400 |
+      | C2 | 1-3 → 4 → 8-9 → 10 → 11 → 24 -> 1-3 | carte găsită → return 200 |
+      | C3 | 1-3 → 4 → 8-9 → 10 → 12-13 → 14 → 15-16  → 24 -> 1-3 | cartea nu e găsită, user e găsit |
+      | C4 | 1-3 → 4 → 8-9 → 10 → 12-13 → 14 → 17-20 → 24 -> 1-3 | userul nu e găsit |
+      | C5 | 1-3 → 4 -> 8-9 -> 21-23 → 24 -> 1-3 | excepție DB |
+
+      Acestea au fost acoperite prin testele anterioare.
+
+      h) Testarea la nivel de cale
+
+      Căile principale sunt:
+
+      - validare invalidă ➔ return 400	
+      - carte există ➔ return 200	
+      - carte nu există, user există ➔ return 404 (book)	
+      - carte nu există, user nu există ➔ return 404 (user)	
+      - excepție în DB ➔ return 500
+
+      Acestea au fost acoperite prin testele anterioare.
+
+ 3. **Testare de Mutanți**
+
+    Stryker a identificat 1 fișier sursă de mutat dintr-un total de 65 fișiere.
+    
+    Au fost generate 32 de mutanți pe baza codului sursă.
+
+    Pentru rularea testelor a fost folosit test runner-ul jest cu analiză perTest pentru acoperirea codului.
+
+    Rezultate obținute:
+
+        Mutanți testați: 32/32
+        
+        Mutanți omorâți ("killed"): 21
+        
+        Mutanți care au supraviețuit ("survived"): 4
+        
+        Mutanți care au expirat timpul de execuție ("timed out"): 7
+        
+        Mutation Score: 87.5% (21 mutanți omorâți din 24 testați efectiv)
+
+    Observații:
+
+        - codul sursă testat este library.js, implicând funcționalitatea de obținere a cărților asociate unui utilizator (GET /id/:user_id)
+        
+        - testele au fost împărțite în teste funcționale (Equivalence Partitioning, Boundary Value Analysis, Category Partitioning) și teste structurale (Statement și Condition Coverage)
+        
+        - mjoritatea mutanților au fost corect detectați de teste, indicând o acoperire bună a cazurilor de eroare și a fluxurilor normale
+        
+        - mutanții supraviețuitori au fost în principal modificări asupra literalelor de string folosite în interogările SQL sau mesajele de eroare (console.error), sugerând că testele nu verifică explicit aceste mesaje sau interogări
+
+    Exemple de mutanți supraviețuitori:
+
+        - eliminarea query-ului SQL în routes/library.js:44.
+        
+        - eliminarea mesajelor de eroare în routes/library.js:48 și routes/library.js:65.
+        
+        - înlocuirea unei interogări SQL cu un string gol în routes/library.js:56.
+
+     Pentru a acoperi și mutanții supraviețuitori, ar putea fi util să adăugăm:
+
+        - teste suplimentare care verifică existența mesajelor de eroare în caz de input invalid sau erori de bază de date.
+        
+        - validări suplimentare pentru interogările SQL (dacă relevant pentru aplicație).
+       
+    Testele au rulat cu o medie de 15.97 teste pe mutant.
+    
+    Durata totală a testării de mutație: aproximativ 21 de secunde.
+    
+    Raportul complet a fost generat și salvat într-un format HTML la **reports/mutation/mutation.html**
+
+    ![image](https://github.com/user-attachments/assets/12ab5ab4-8f13-4e83-ac0c-535559b393b6)
+
+    În urma îmbunătățirii testelor, am obținut acoperirea 100% a codului testat.
+
+    ![image](https://github.com/user-attachments/assets/1862a278-05b3-4e4e-838d-794ee6973d23)
+
+    Actualizări teste:
+
+       - am adăugat un **jest.spyOn(console, 'error')** pentru a verifica afișarea mesajelor de eroare specifice
+       
+       - am creat un mock pentru **db.prepare** și am verificat apelurile pentru interogările SQL corecte 
+       
+       - am validat ordinea și conținutul apelurilor către db.prepare folosind **mock.calls**
+
+ ### Rezultate teste functionale
+ ![image](https://github.com/user-attachments/assets/5692ca35-209b-418e-b80a-2d5068df0764)
+
+ ## Testare structurala
+
+ Pentru functia de PUT review
+![image](https://github.com/user-attachments/assets/1415c511-290a-4e97-baad-0589fca51d08)
+
+
+
+    
+=======
  2. **Testare Structurală**
      
  ### Rezultate teste functionale
  ![image](https://github.com/user-attachments/assets/5692ca35-209b-418e-b80a-2d5068df0764)
 
 
+>>>>>>> e44bd22e6319fa881beacf8af2f4174f9afcd1d4
 
 ## Bibliografie
 - https://jestjs.io/docs/getting-started
