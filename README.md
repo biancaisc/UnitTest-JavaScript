@@ -176,7 +176,7 @@ Analiză valori de frontieră:
 Functia adauga un review nou
 ![image](https://github.com/user-attachments/assets/54cda963-17f6-4b36-948d-48d30533d1d2)
 
-### Testare functionala
+### 1.Testare functionala
 
 Am împărțit funcția în mai multe cazuri: 
  - totul merge bine: atunci funcția ar trebui să returneze statusul 201 și mesajul 'Review added successfully!';
@@ -217,7 +217,7 @@ Analiza valori de frontieră:
   - status cod 201 și un mesaj de succes
   - status cod 400 cu mesaj de eroare
 
-### Testare structurala
+### 2. Testare structurala
 **Acoperire la nivel de instructiunie(statement coverage)**
 
 Fiecare instructiune din functia de creare a review-ului (router.post) este executată cel putin o data:
