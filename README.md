@@ -282,7 +282,8 @@ Am asigurat ca fiecare decizie (```if```) din cod a avut toate rezultatele posib
 ### Funcția de returnare a cărții unui utilizator
 Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care gestionează ruta **/:user_id/:book_id**. 
 
-![alt text](functie.drawio.png)
+![functie drawio](https://github.com/user-attachments/assets/69dd71b2-1479-41aa-9558-8ad770790d8d)
+
 
 1. **Testare Funcțională**
 
@@ -428,145 +429,143 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 2. **Testare Structurală**
     - **Graful de flux de control** al programului (CFG) 
 
-    ![alt text](graf-functie.png)
+    ![graf-functie drawio (1) drawio](https://github.com/user-attachments/assets/4c626583-8af8-4881-867c-e481976a4d53)
+
+      Funcția are câteva puncte de decizie:
+
+       - verifică dacă user_id sau book_id sunt invalide
+       - verifică dacă cartea există în biblioteca user-ului
+       - verifică dacă user-ul există
+
+      Pe baza grafului se pot defini următoarele acoperiri:
+
+      a) **Acoperire la nivel de instrucțiune** (Statement coverage)
       
-        Funcția are câteva puncte de decizie:
+      Ne concentrăm asupra instrucțiunilor controlate de condiții, pentru ca fiecare instrucțiune(nod al grafului) să fie parcursă cel puțin o dată:
+   
+       - returnează eroare pentru input invalid
+       - returnează cartea din biblioteca user-ului
+       - returnează mesaj dacă nu există cartea în biblioteca user-ului
+       - returnează mesaj dacă user-ul nu există
+       - returnează eroare când se produce o eroare de la baza de date
 
-         - verifică dacă user_id sau book_id sunt invalide
-         - verifică dacă cartea există în biblioteca user-ului
-         - verifică dacă user-ul există
+      | user_id | book_id | Rezultat afișat | Instrucțiuni parcurse |
+      |-------------------------------|-------------------------------------------------|--------------------------------------------------------------------------------------|--------------------------------------------------------------------|
+      | "user-invalid123" | "10" | 400 + "Invalid user id or book id provided." | 1-3 → 4 → 5-7 → 24 |
+      | "1" | "1" -cartea există | 200 + cartea găsită | 1-3 → 4 → 8-9 → 10 → 11 → 24 |
+      | "1" | "2" -cartea nu există | 404 + "The book is not in your library." | 1-3 → 4 → 8-9 → 10 → 12-13 → 14 → 15-16  → 24 |
+      | "999" -user inexistent | "1" | 404 + "The user does not exist." | 1-3 → 4 → 8-9 → 10 → 12-13 → 14 → 17-20 → 24 |
+      | "1" | "1" | 500 + "There is an error processing your request." | 1-3 → 4 -> 8-9 -> 21-23 → 24 |
 
-        Pe baza grafului se pot defini următoarele acoperiri:
+      b) Acoperire la nivel de decizie (Decision coverage)
 
-        a) Acoperire la nivel de instrucțiune (Statement coverage)
-        
-            Ne concentrăm asupra instrucțiunilor controlate de condiții, pentru ca fiecare instrucțiune(nod al grafului) să fie parcursă cel puțin o dată:
-             - returnează eroare pentru input invalid
-             - returnează cartea din biblioteca user-ului
-             - returnează mesaj dacă nu există cartea în biblioteca user-ului
-             - returnează mesaj dacă user-ul nu există
-             - returnează eroare când se produce o eroare de la baza de date
+      Pentru fiecare decizie trebuie să testăm ieșirile care rezultă când fiecare decizie este adevarată sau falsă.
 
-            | Input | Rezultat afișat | Instrucțiuni parcurse |
-            |:--------------------------|:---------------:|:---------------------:|
-            | user_id | book_id |                 |                       |
-            |---|---|-----------------|-----------------------|
-            | "user-invalid123" | "10" | 400 + "Invalid user id or book id provided." | 1-3 → 4 → 5-7 → 24 |
-            | "1" | "1" -cartea există | 200 + cartea găsită | 1-3 → 4 → 8-9 → 10 → 11 → 24 |
-            | "1" | "2" -cartea nu există | 404 + "The book is not in your library." | 1-3 → 4 → 8-9 → 10 → 12-13 → 14 → 15-16  → 24 |
-            | "999" -user inexistent | "1" | 404 + "The user does not exist." | 1-3 → 4 → 8-9 → 10 → 12-13 → 14 → 17-20 → 24 |
-            | "1" | "1" | 500 + "There is an error processing your request." | 1-3 → 4 -> 8-9 -> 21-23 → 24 |
+      | Decizie | user_id | book_id | Output Decizie | Rezultat așteptat |
+      |------------------|-----------------|----------------|--------------|--------------------|
+      | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` | invalid | valid | adevărat | 400 + "Invalid user id or book id provided." |
+      | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` | valid | valid | fals | verificare existență carte |
+      | `if (book)` | valid | valid - carte existentă | adevărat | 200 + cartea găsită |
+      | `if (book)` | valid | valid - carte inexistentă | fals | verificare existență user |
+      | `if (userExists)`| valid - user existent | valid - carte inexistentă | adevărat | 404 + "The book is not in your library." |
+      | `if (userExists)` | valid - user inexistent | valid | fals | 404 + "The user does not exist." |
 
-        b) Acoperire la nivel de decizie (Decision coverage)
+      Toate rezultatele au fost deja acoperite prin testele anterioare.
 
-            Pentru fiecare decizie trebuie să testăm ieșirile care rezultă când fiecare decizie este adevarată sau falsă.
+      c) Acoperire la nivel de condiție (Condition coverage)
 
-            | Decizie | Input | Output Decizie | Rezultat așteptat |
-            |:-------:|:-----------:|:---------:|:---------:|
-            |         | user_id | book_id |          |            |
-            |---------|---|---|--------------|--------------------|
-            | "if(!user_id.trim() || !book_id.trim() || isNaN(user_id) || isNaN(book_id))" | invalid | valid | adevărat | 400 + "Invalid user id or book id provided." |
-            | "if(!user_id.trim() || !book_id.trim() || isNaN(user_id) || isNaN(book_id))" | valid | valid | fals | verificare existență carte |
-            | "if (book)" | valid | valid - carte existentă | adevărat | 200 + cartea găsită |
-            | "if (book)" | valid | valid - carte inexistentă | fals | verificare existență user |
-            | "if (userExists)" | valid - user existent | valid - carte inexistentă | adevărat | 404 + "The book is not in your library." |
-            | "if (userExists)" | valid - user inexistent | valid | fals | 404 + "The user does not exist." |
+      Aceasta implică fiecare condiție individuală dintr-o decizie să ia atât valoarea adevărat cât și fals.
+      
+      | Decizie | Condiție individuală |
+      |-------|-----------|
+      | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` | !user_id.trim(), !book_id.trim(), isNaN(user_id), isNaN(book_id) |
+      | `if (book)` | book |
+      | `if (userExists)` | userExists |
 
-            Toate rezultatele au fost deja acoperite prin testele anterioare.
+      Date de test pentru a acoperi toate condițiile: 
 
-        c) Acoperire la nivel de condiție (Condition coverage)
+      | user_id | book_id | Condiție acoperită | Rezultat așteptat |
+      |----------|-------------|-------------------|---------------------|
+      | " " | 1 | `!user_id.trim() = true`, restul condițiilor sunt false | 400 + "Invalid user id or book id provided." |
+      | 1 | " " | `!book_id.trim() = true`, restul condițiilor sunt false | 400 + "Invalid user id or book id provided." |
+      | "abc" | 1 | `isNaN(user_id) = true`, restul condițiilor sunt false | 400 + "Invalid user id or book id provided." |
+      | 1 | "abc" | `isNaN(book_id) = true`, restul condițiilor sunt false | 400 + "Invalid user id or book id provided." |
+      | "1" | "1" -cartea există | `book = true` | 200 + cartea găsită | 
+      | "1" | "2" -cartea nu există | `book = false` | verificare existență user |
+      | "1" - user există | "2" -cartea nu există | `userExists = true` | 404 + "The book is not in your library." |
+      | "999" -user inexistent | "1" | `userExists = false` | 404 + "The user does not exist." |
 
-            Aceasta implică fiecare condiție individuală dintr-o decizie să ia atât valoarea adevărat cât și fals.
-            
-            | Decizie | Condiție individuală |
-            |-------|-----------|
-            | "if(!user_id.trim() || !book_id.trim() || isNaN(user_id) || isNaN(book_id))" | !user_id.trim(), !book_id.trim(), isNaN(user_id), isNaN(book_id) |
-            | if (book) | book |
-            | if (userExists) | userExists |
+      d) Acoperire la nivel de condiție/decizie
 
-            Date de test pentru a acoperi toate condițiile: 
+      Această acoperire cere ca:
+   
+       - fiecare condiție să fie atât true cât și false
+       - fiecare decizie întreagă să fie și true și false
 
-            | user_id | book_id | Condiție acoperită | Rezultat așteptat |
-            | " " | 1 | !user_id.trim() = true, restul condițiilor sunt false | 400 + "Invalid user id or book id provided." |
-            | 1 | " " | !book_id.trim() = true, restul condițiilor sunt false | 400 + "Invalid user id or book id provided." |
-            | "abc" | 1 | isNaN(user_id) = true, restul condițiilor sunt false | 400 + "Invalid user id or book id provided." |
-            | 1 | "abc" | isNaN(book_id) = true, restul condițiilor sunt false | 400 + "Invalid user id or book id provided." |
-            | "1" | "1" -cartea există | book = true | 200 + cartea găsită | 
-            | "1" | "2" -cartea nu există | book = false | verificare existență user |
-            | "1" - user există | "2" -cartea nu există | userExists = true | 404 + "The book is not in your library." |
-            | "999" -user inexistent | "1" | userExists = false | 404 + "The user does not exist." |
+      Testele anterioare au acoperit aceste cazuri.
 
-        d) Acoperire la nivel de condiție/decizie
+      e) Acoperire la nivel de condiții multiple (Multiple Condition Coverage)
 
-            Această acoperire cere ca:
+      Avem o decizie care cuprinde condiții multiple:
+          
+        !user_id.trim() || !book_id.trim() || isNaN(user_id) || isNaN(book_id)
+          
+      Pentru a testa toate combinațiile posibile ale condițiilor individuale, în număr de 4, ar trebui 2^4 teste, dar operatorul || se oprește la prima evaluare și putem optimiza astfel:
 
-             -fiecare condiție să fie atât true cât și false
-             -fiecare decizie întreagă să fie și true și false
+      | user_id | book_id | Condiție acoperită |
+      |----------|-------------|-------------------
+      | " " | 1 |	`!user_id.trim() = true`, restul condițiilor sunt false |
+      | 1 | " " | `!book_id.trim() = true`, restul condițiilor sunt false |
+      | "abc" | 1 | `isNaN(user_id) = true`, restul condițiilor sunt false |
+      | 1 | "abc" | `isNaN(book_id) = true`, restul condițiilor sunt false |
+      | 1 | 1 | toate condițiile false |
 
-            Testele anterioare au acoperit aceste cazuri.
+      Cazurile au fost acoperite prin testele anterioare.
 
-        e) Acoperire la nivel de condiții multiple (Multiple Condition Coverage)
+      f) Modified condition/decision (MC/DC) coverage
+      
+      Pentru fiecare condiție trebuie să vedem că poate influența decizia în mod independent.
 
-            Avem o decizie care cuprinde condiții multiple:
-            
-             - !user_id.trim() || !book_id.trim() || isNaN(user_id) || isNaN(book_id)
-            
-            Pentru a testa toate combinațiile posibile ale condițiilor individuale, în număr de 4, ar trebui 2^4 teste, dar operatorul || se oprește la prima evaluare și putem optimiza astfel:
+      Prin testele de la Multiple Coverage Coverage, se demonstrează că:
+      
+       - !user_id.trim() influențează singură decizia (user_id = " ")
+       - !book_id.trim() influențează singură decizia (book_id = " ")
+       - isNaN(user_id) influențează singură decizia	(user_id = "abc")
+       - isNaN(book_id) influențează singură decizia (book_id = "abc")
+          
+      g) Testarea circuitelor independente
 
-            | user_id | book_id | Condiție acoperită |
-            | " " | 1 |	!user_id.trim() = true , restul condițiilor sunt false |
-            | 1 | " " | !book_id.trim() = true, restul condițiilor sunt false |
-            | "abc" | 1 | isNaN(user_id) = true, restul condițiilor sunt false |
-            | 1 | "abc" | isNaN(book_id) = true, restul condițiilor sunt false |
-            | 1 | 1 | toate condițiile false |
+      Circuitele linear independente implică proprietatea ca nici unul să nu poate fi obținut ca o combinație a celorlalte.
 
-            Cazurile au fost acoperite prin testele anterioare.
+      Ducând un arc de la 24 la 1, obținem:
+      
+          N = 12
+          E = 15
+          V(G) = E - N + 2 = 5 circuite independente
 
-        f) Modified condition/decision (MC/DC) coverage
-        
-            Pentru fiecare condiție trebuie să vedem că poate influența decizia în mod independent.
+      | Circuit | Cale urmată | Descriere |
+      |----------|-------------|-------------------|
+      | C1 | 1-3 → 4 → 5-7 → 24 -> 1-3 | input invalid → return 400 |
+      | C2 | 1-3 → 4 → 8-9 → 10 → 11 → 24 -> 1-3 | carte găsită → return 200 |
+      | C3 | 1-3 → 4 → 8-9 → 10 → 12-13 → 14 → 15-16  → 24 -> 1-3 | cartea nu e găsită, user e găsit |
+      | C4 | 1-3 → 4 → 8-9 → 10 → 12-13 → 14 → 17-20 → 24 -> 1-3 | userul nu e găsit |
+      | C5 | 1-3 → 4 -> 8-9 -> 21-23 → 24 -> 1-3 | excepție DB |
 
-            Prin testele de la Multiple Coverage Coverage, se demonstrează că:
-            
-             - !user_id.trim() influențează singură decizia (user_id = " ")
-             - !book_id.trim() influențează singură decizia (book_id = " ")
-             - isNaN(user_id) influențează singură decizia	(user_id = "abc")
-             - isNaN(book_id) influențează singură decizia (book_id = "abc")
-            
-        g) Testarea circuitelor independente
+      Acestea au fost acoperite prin testele anterioare.
 
-            Circuitele linear independente implică proprietatea ca nici unul să nu poate fi obținut ca o combinație a celorlalte.
+      h) Testarea la nivel de cale
 
-            Ducând un arc de la 24 la 1, obținem:
-            
-                N = 12
+      Căile principale sunt:
 
-                E = 15
+      - validare invalidă ➔ return 400	
+      - carte există ➔ return 200	
+      - carte nu există, user există ➔ return 404 (book)	
+      - carte nu există, user nu există ➔ return 404 (user)	
+      - excepție în DB ➔ return 500
 
-                V(G) = E - N + 2 = 5 circuite independente
+      Acestea au fost acoperite prin testele anterioare.
 
-            | Circuit | Cale urmată | Descriere |
-            | C1 | 1-3 → 4 → 5-7 → 24 -> 1-3 | input invalid → return 400 |
-            | C2 | 1-3 → 4 → 8-9 → 10 → 11 → 24 -> 1-3 | carte găsită → return 200 |
-            | C3 | 1-3 → 4 → 8-9 → 10 → 12-13 → 14 → 15-16  → 24 -> 1-3 | cartea nu e găsită, user e găsit |
-            | C4 | 1-3 → 4 → 8-9 → 10 → 12-13 → 14 → 17-20 → 24 -> 1-3 | userul nu e găsit |
-            | C5 | 1-3 → 4 -> 8-9 -> 21-23 → 24 -> 1-3 | excepție DB |
-
-            Acestea au fost acoperite prin testele anterioare.
-
-        h) Testarea la nivel de cale
-
-            Căile principale sunt:
-
-            - validare invalidă ➔ return 400	
-            - carte există ➔ return 200	
-            - carte nu există, user există ➔ return 404 (book)	
-            - carte nu există, user nu există ➔ return 404 (user)	
-            - excepție în DB ➔ return 500
-
-            Acestea au fost acoperite prin testele anterioare.
-
-3. **Testare de Mutanți**
+4. **Testare de Mutanți**
 
  ### Rezultate teste functionale
  ![image](https://github.com/user-attachments/assets/5692ca35-209b-418e-b80a-2d5068df0764)
