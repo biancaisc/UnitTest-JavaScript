@@ -100,7 +100,6 @@ Framework de mutation testing: **StrykerJS** (ajută la evaluarea calității te
 
     StrykerJS va modifica codul sursă al aplicației (va crea mutanți), va rula testele și va raporta dacă testele au reușit să identifice mutanții.
 
-## Testare functionala
 
 ### Teste pentru post comments
 
