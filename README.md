@@ -48,7 +48,7 @@ Metodă de testare a calității testelor, care presupune introducerea unor modi
 
 Scopul acestei tehnici este de a evalua eficiența testelor: dacă un test nu detectează o modificare introdusă în cod, aceasta indică faptul că testul nu este suficient de robust sau acoperitor. Testarea de mutanți este folosită pentru a îmbunătăți calitatea și completitudinea suitei de teste.
 
-## Testare cu Mock
+## Testare cu Mock [[8]](Bibliografie)
 Metoda de testare software care simulează comportamentul dependențelor sau componentelor externe, permitand astfel testarea izolată a unor părți specifice din cod.
 
 **Cum am folosit in proiect ->**
@@ -59,7 +59,7 @@ Framework de testare: **Jest** ( are suport activ, necesita o configurare minima
 
 Utilizare **Babel** :  **Babel** este folosit pentru a transpila codul JavaScript modern într-un format compatibil cu mediul Node.js, permițându-ne să rulăm testele unitare pe codul backend al aplicației fără a întâmpina probleme de compatibilitate.
 
-Framework de mutation testing: **StrykerJS** (ajută la evaluarea calității testelor existente, introducând modificări minore în cod și verificând dacă testele pot detecta aceste schimbări)
+Framework de mutation testing: **StrykerJS** [[6]](Bibliografie) (ajută la evaluarea calității testelor existente, introducând modificări minore în cod și verificând dacă testele pot detecta aceste schimbări)
 
 ## Setup pentru testare cu Jest
 
@@ -84,7 +84,7 @@ Framework de mutation testing: **StrykerJS** (ajută la evaluarea calității te
  
     ```npm test```
    
-## Setup pentru testare cu StrykerJS
+## Setup pentru testare cu StrykerJS [[7]](Bibliografie)
  
  1. Instalare și inițializare StrykerJS (în folderul backend)
  
@@ -632,26 +632,34 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 
     Actualizări teste:
 
-       - am adăugat un **jest.spyOn(console, 'error')** pentru a verifica afișarea mesajelor de eroare specifice
+       - am adăugat un **jest.spyOn(console, 'error')**  [[8]](Bibliografie) pentru a verifica afișarea mesajelor de eroare specifice 
        
        - am creat un mock pentru **db.prepare** și am verificat apelurile pentru interogările SQL corecte 
        
-       - am validat ordinea și conținutul apelurilor către db.prepare folosind **mock.calls**
+       - am validat ordinea și conținutul apelurilor către db.prepare folosind **mock.calls** [[3]](Bibliografie)
 
  ### Rezultate teste functionale
  ![image](https://github.com/user-attachments/assets/5692ca35-209b-418e-b80a-2d5068df0764)
 
 
 ## Bibliografie
-- https://jestjs.io/docs/getting-started
-- https://www.geeksforgeeks.org/testing-with-jest/
-- https://devhints.io/jest
-- https://www.geeksforgeeks.org/how-to-test-react-components-using-jest/
-- https://medium.com/@dilip.bhaidiya/mastering-react-js-testing-with-jest-a-comprehensive-guide-1acada2b9586
-- https://stryker-mutator.io/docs/stryker-js/introduction/
-- https://yumasoft.pl/how-to-use-strykerjs-with-jest-and-typescript-3/
-- https://jestjs.io/docs/mock-function-api
-- https://www.lambdatest.com/learning-hub/structural-testing
+[1] <https://jestjs.io/docs/getting-started>
+
+[2] <https://www.geeksforgeeks.org/testing-with-jest/>
+
+[3] <https://devhints.io/jest>
+
+[4] <https://www.geeksforgeeks.org/how-to-test-react-components-using-jest/>
+
+[5] <https://medium.com/@dilip.bhaidiya/mastering-react-js-testing-with-jest-a-comprehensive-guide-1acada2b9586>
+
+[6] <https://stryker-mutator.io/docs/stryker-js/introduction/>
+
+[7] <https://yumasoft.pl/how-to-use-strykerjs-with-jest-and-typescript-3/>
+
+[8] <https://jestjs.io/docs/mock-function-api>
+
+[9] <https://www.lambdatest.com/learning-hub/structural-testing>
   
 
 
