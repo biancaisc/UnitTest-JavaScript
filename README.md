@@ -292,7 +292,6 @@ Am asigurat ca fiecare decizie (```if```) din cod a avut toate rezultatele posib
 ### Funcția de returnare a cărții unui utilizator
 Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care gestionează ruta **/:user_id/:book_id**. 
 
-<<<<<<< HEAD
 ![functie drawio](https://github.com/user-attachments/assets/69dd71b2-1479-41aa-9558-8ad770790d8d)
 
 1. **Testare Funcțională**
@@ -331,9 +330,7 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 
          O_4 =  un mesaj dacă user_id sau book_id au valori invalide, returnând cod 400
 
-<<<<<<< HEAD
          O_5 =  un mesaj dacă se produce o eroare în baza de date, când datele sunt valide, returnând cod 500
-=======
     
       **Clase de echivalență globale**
       
@@ -438,7 +435,6 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
         | " " | "a-1-2" | - | 400 + "Invalid user id or book id provided." |
         | "100" | "101" | Eroare DB | 500 + "There is an error processing your request." |
 
-<<<<<<< HEAD
 2. **Testare Structurală**
     - **Graful de flux de control** al programului (CFG) 
 
@@ -645,22 +641,6 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
  ### Rezultate teste functionale
  ![image](https://github.com/user-attachments/assets/5692ca35-209b-418e-b80a-2d5068df0764)
 
- ## Testare structurala
-
- Pentru functia de PUT review
-![image](https://github.com/user-attachments/assets/1415c511-290a-4e97-baad-0589fca51d08)
-
-
-
-    
-=======
- 2. **Testare Structurală**
-     
- ### Rezultate teste functionale
- ![image](https://github.com/user-attachments/assets/5692ca35-209b-418e-b80a-2d5068df0764)
-
-
->>>>>>> e44bd22e6319fa881beacf8af2f4174f9afcd1d4
 
 ## Bibliografie
 - https://jestjs.io/docs/getting-started
