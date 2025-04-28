@@ -216,7 +216,26 @@ Astfel, am împărțit funcția în următoarele instrucțiuni:
 | 1 | "This is a valid comment" | 1 | 201 + "Comment added successfully." | 1-2 → 3 -> 5 -> 7 -> 9 -> 11 -> 12 -> 13-14 |
 | 1 | "This is a valid comment" | 1 | 500 + "Error adding comment." | 1-2 → 3 -> 5 -> 7 -> 9 -> 11 -> 12 -> 15 -> 16-17 |
 
-**Acoperire la nivel de decizie (decision coverage)**
+Astfel se acoperă toate intrucțiunile prin intermediul testelor pe care le-am scris.
+
+## Acoperire la nivel de decizie (decision coverage)
+
+Decision coverage se asigură că fiecare ramură a unei structuri decizionale este executată măcar o dată.
+În cadrul funcției există 4 decizii (sub forma unor structuri if..else) și un try catch.
+Testele acoperă aceste decizii, dar și structura try...catch
+
+| book_id | content | user_id | Rezultat afișat | Instrucțiuni parcurse |
+|---------|---------|---------|-----------------|-----------------------|
+| null | null | 1 | 400 + "All fields are required." | decizia 1 - ramura de true |
+| null | "continut" | 1 | 400 + "All fields are required." | decizia 1 - ramura de true |
+| 1 | null | 1 | 400 + "All fields are required." | decizia 1 - ramura de true |
+| "1" | "Valid comment" | 1 | 400 + "Invalid book id!" | decizia 1 - ramura de false; decizia 2 ramura de true |
+| -1 | "Valid comment" | 1 | 400 + "Invalid book id!" | decizia 1 - ramura de false; decizia 2 ramura de true |
+| 1 | '123' | 1 | 400 + "Content is too short!" | decizia 1 - ramura de false; decizia 2 ramura de true |
+| 1 | 'a'.repeat(501) | 1 | 400 + "Content is too long!" | decizia 1 - ramura de false; decizia 2 ramura de false; decizia 3 ramura de false; decizia 4 ramura de true |
+| 1 | "This is a valid comment" | 1 | 201 + "Comment added successfully." | decizia 1 - ramura de false; decizia 2 ramura de false; decizia 3 ramura de false; decizia 4 ramura de false; try accepted |
+| 1 | "This is a valid comment" | 1 | 500 + "Error adding comment." | decizia 1 - ramura de false; decizia 2 ramura de false; decizia 3 ramura de false; decizia 4 ramura de false; try rejected => catch |
+
 **Acoperire la nivel de conditie (condtition coverage)**
 **Acoperire la nivel de condiție/decizie (condition/decision coverage)**
 **Acoperire la nivel de condiții multiple (multiple condition coverage)**
