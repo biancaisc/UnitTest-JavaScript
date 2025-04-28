@@ -155,9 +155,25 @@ Analiză valori de frontieră:
 
 ### 2. Testare structurală
 
-**Acoperire la nivel de instructiunie (statement coverage)**
+## Acoperire la nivel de instructiunie (statement coverage)
 
-## Ne concentrăm ca fiecare instrucțiune (nod al grafului) să fie parcurs măcar o dată  
+**Ne concentrăm ca fiecare instrucțiune (nod al grafului) să fie parcurs măcar o dată**  
+
+Astfel, am împărțit funcția în următoarele instrucțiuni:
+ - Instrucțiunea 1,2: instrucțiune de extragere de conținut
+ - Instrucțiunea 3: instrucțiune de verificare dacă book_id și content nu sunt nule
+ - Instrucțiunea 4: instrucțiune de aruncare eroare în cazul în care book_id sau content sunt nule
+ - Instrucțiunea 5: instrucțiune de verificare dacă book_id este valid
+ - Instrucțiunea 6: instrucțiune de aruncare de eroare în cazul în care book_id este invalid
+ - Instrucțiunea 7: instrucțiune de verificare dacă content are lungimea potrivită
+ - Instrucțiunea 8: instrucțiune de aruncare de eroare dacă content nu are lungimea potrivită
+ - Instrucțiunea 9: instrucțiune de verificare dacă content are lungimea potrivită
+ - Instrucțiunea 10: instrucțiune de aruncare de eroare dacă content nu are lungimea potrivită
+ - Instrucțiunea 11: instrucțiune de pregătire cerere SQL
+ - Instrucțiunea 12: instrucțiune de încercare de adăugare în baza de date
+ - Instrucțiunea 13,14: instrucțiuni de adăugare în baza de date
+ - Instrucțiunea 15: instrucțiune prindere eroare
+ - Instrucțiunea 16,17: instrucțiuni gestionare eroare
 
 **Acoperire la nivel de decizie (decision coverage)**
 **Acoperire la nivel de conditie (condtition coverage)**
