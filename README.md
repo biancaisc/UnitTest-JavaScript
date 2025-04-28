@@ -244,7 +244,7 @@ In cadrul functiei exista 4 decizii, dintre care doua dintre ele au cate doua co
 | decizie | conditie 1 | conditie 2 |
 |---------|------------|------------|
 |if(!book_id sau !content)|!book_id|!content|
-|if (typeof book_id !== 'number' || book_id <= 0)|typeof book_id !== 'number'|book_id <= 0|
+|if (typeof book_id !== 'number' sau book_id <= 0)|typeof book_id !== 'number'|book_id <= 0|
 
 Astfel, testele urmatoare acopera aceste conditii din cadrul deciziilor.
 
