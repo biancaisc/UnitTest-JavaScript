@@ -184,17 +184,17 @@ Astfel, am împărțit funcția în următoarele instrucțiuni:
  - Instrucțiunea 16,17: instrucțiuni gestionare eroare
 
 | book_id | content | user_id | Rezultat afișat | Instrucțiuni parcurse |
-      |-------------------------------|-------------------------------------------------|-----------------------------------------------------|--------------------------------------------------------------------------------------|--------------------------------------------------------------------|
-      | null | null | 1 | 400 + "All fields are required." | 1-2 → 3 -> 4 |
-      | null | "continut" | 1 | 400 + "All fields are required." | 1-2 → 3 -> 4 |
-      | 1 | null | 1 | 400 + "All fields are required." | 1-2 → 3 -> 4 |
-      | "1" | "Valid comment" | 1 | 400 + "Invalid book id!" | 1-2 → 3 -> 5 -> 6 |
-      | -1 | "Valid comment" | 1 | 400 + "Invalid book id!" | 1-2 → 3 -> 5 -> 6 |
-      | 1 | '123' | 1 | 400 + "Content is too short!" | 1-2 → 3 -> 5 -> 7 -> 8 |
-      | 1 | 'a'.repeat(501) | 1 | 400 + "Content is too long!" | 1-2 → 3 -> 5 -> 7 -> 9 -> 10 |
-      | 1 | 'a'.repeat(501) | 1 | 400 + "Content is too long!" | 1-2 → 3 -> 5 -> 7 -> 9 -> 10 |
-      | 1 | "This is a valid comment" | 1 | 201 + "Comment added successfully." | 1-2 → 3 -> 5 -> 7 -> 9 -> 11 -> 12 -> 13-14 |
-      | 1 | "This is a valid comment" | 1 | 500 + "Error adding comment." | 1-2 → 3 -> 5 -> 7 -> 9 -> 11 -> 12 -> 15 -> 16-17 |
+|---------|---------|---------|-----------------|-----------------------|
+| null | null | 1 | 400 + "All fields are required." | 1-2 → 3 -> 4 |
+| null | "continut" | 1 | 400 + "All fields are required." | 1-2 → 3 -> 4 |
+| 1 | null | 1 | 400 + "All fields are required." | 1-2 → 3 -> 4 |
+| "1" | "Valid comment" | 1 | 400 + "Invalid book id!" | 1-2 → 3 -> 5 -> 6 |
+| -1 | "Valid comment" | 1 | 400 + "Invalid book id!" | 1-2 → 3 -> 5 -> 6 |
+| 1 | '123' | 1 | 400 + "Content is too short!" | 1-2 → 3 -> 5 -> 7 -> 8 |
+| 1 | 'a'.repeat(501) | 1 | 400 + "Content is too long!" | 1-2 → 3 -> 5 -> 7 -> 9 -> 10 |
+| 1 | 'a'.repeat(501) | 1 | 400 + "Content is too long!" | 1-2 → 3 -> 5 -> 7 -> 9 -> 10 |
+| 1 | "This is a valid comment" | 1 | 201 + "Comment added successfully." | 1-2 → 3 -> 5 -> 7 -> 9 -> 11 -> 12 -> 13-14 |
+| 1 | "This is a valid comment" | 1 | 500 + "Error adding comment." | 1-2 → 3 -> 5 -> 7 -> 9 -> 11 -> 12 -> 15 -> 16-17 |
 
 **Acoperire la nivel de decizie (decision coverage)**
 **Acoperire la nivel de conditie (condtition coverage)**
