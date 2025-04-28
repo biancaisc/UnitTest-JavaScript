@@ -440,8 +440,29 @@ Am asigurat ca fiecare decizie (```if```) din cod a avut toate rezultatele posib
 - O singura conditie
 - existingReview = true -> raspuns 400
 - existingReview = false -> se continua inserarea
+### 3. Testare cu Mutanti
+Au fost generati 33 de mutanti pe baza codului sursa din fisierul ‘reviews.js’, unde am lasat doar functia de /POST pe care am facut testele functionale si structurale de mai sus.
+
+Rezultate obtinute:
+
+![image](https://github.com/user-attachments/assets/9c982ff0-c0f7-4caf-8c1a-023d368e190a)
+
+Observatii:
+
+- Primul mutant a schimbat ruta router.post('/', ...) in router.post('', ...)
+  
+- Al doilea mutant a modificat textul din console.error de la 'Error adding review: ' la "" (un sir gol)
 
 
+Pentru imbunatatire:
+
+ - La primul, ar trebui testat ce s-a logat (dar de obicei nu se recomanda testarea console.error direct)
+  
+ - La al doilea, schimbarea nu afectează functionarea aplicatiei
+
+  => Acesti mutanti pot supravietui fara a afecta functionarea aplicatiei
+  
+ 
     
 ### Funcția de returnare a cărții unui utilizator
 Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care gestionează ruta **/:user_id/:book_id**. 
