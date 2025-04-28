@@ -113,6 +113,8 @@ Framework de mutation testing: **StrykerJS** [6] (ajută la evaluarea calități
 
 ### Teste pentru post comments
 
+### 1. Testare funcțională
+
 Am împărțit funcția în mai multe cazuri: 
  - datele sunt corecte: atunci funcția ar trebui să returneze statusul 201 și să returneze textul: 'Comment added succesfully!';
  - datele nu sunt corecte pentru că nu este dat book_id: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'All fields are required!';
@@ -150,6 +152,18 @@ Analiză valori de frontieră:
 **Domeniul de ieșiri**
    - status cod 201 cu mesaj de succes
    - status cod 400 cu mesaj de eroare cu toate câmpurile sunt obligatorii
+
+### 2. Testare structurală
+
+**Acoperire la nivel de instructiunie (statement coverage)**
+
+## Ne concentrăm ca fiecare instrucțiune (nod al grafului) să fie parcurs măcar o dată  
+
+**Acoperire la nivel de decizie (decision coverage)**
+**Acoperire la nivel de conditie (condtition coverage)**
+**Acoperire la nivel de condiție/decizie (condition/decision coverage)**
+**Acoperire la nivel de condiții multiple (multiple condition coverage)**
+
 
 ### Teste pentru get comments
 
