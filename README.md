@@ -279,13 +279,45 @@ Analiza valori de frontieră:
   - status cod 400 cu mesaj de eroare
 
 ### 2. Testare structurala
+**Graful de flux de control**
+
+![control flow graph](https://github.com/user-attachments/assets/b4ca926f-7f3c-477f-ba2c-10c8d0b6587a)
+
+**Instructiuni**
+
+1.	{ book_id, rating } = req.body;
+2.	user_id = req.user.id;
+3.	 if (!book_id || !rating) 
+4.	return res.status(400).send('All fields are required!');
+5.	if (isNaN(rating) || rating < 1 || rating > 5)
+6.	return res.status(400).send('Rating must be a number between 1 and 5.');
+7.	checkDuplicateQuery = `
+       SELECT * FROM reviews WHERE user_id = ? AND book_id = ?;
+               `;
+8.	insertQuery = `
+        INSERT INTO reviews (user_id, book_id, rating) VALUES (?, ?, ?);
+    `;
+9.	try
+10.	existingReview = db.prepare(checkDuplicateQuery).get(user_id, book_id);
+11.	if (existingReview)
+12.	return res.status(400).send('You have already added a review for this book.');
+13.	db.prepare(insertQuery).run(user_id, book_id, rating);
+14.	return res.status(201).send('Review added successfully!');
+15.	catch(error)
+16.	console.error('Error adding review: ', error.message);
+17.	return res.status(500).send('Error adding review!');
+
+
 **Acoperire la nivel de instructiunie(statement coverage)**
 
 Fiecare instructiune din functia de creare a review-ului (router.post) este executată cel putin o data:
+  - instructiunile de extragere book_id, rating, user_id
 
   - instructiunile care valideaza prezenta book_id si rating
 
   - instructiunile care valideaza daca rating este un numar între 1 și 5
+    
+  - instructiunile de query SELECT si INSERT
 
   - interogarea bazei de date pentru a verifica duplicatele
 
@@ -296,7 +328,7 @@ Fiecare instructiune din functia de creare a review-ului (router.post) este exec
 **Acoperire la nivel de ramura**
 
 ```if (!book_id || !rating) ```
- - fiecare din cei 2 parametrii ia atat valoarea adevarat cat si fals
+ - fiecare din cei 2 parametrii iau atat valoarea adevarat cat si fals
 
 ```if (isNaN(rating) || rating < 1 || rating > 5)```
  - se testeaza cazul cand este adevarata (rating invalid) si cand este falsa (rating valid)
