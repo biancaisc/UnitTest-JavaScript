@@ -36,6 +36,18 @@ router.post('/', verifyToken, (req, res) => {
         return res.status(400).send('All fields are required!');
     }
 
+    if (typeof book_id !== 'number' || book_id <= 0){
+        return res.status(400).send('Invalid book ID!');
+    }
+
+    if(content.length < 5) {
+        return res.status(400).send('Content is too short!');
+    }
+
+    if(content.length > 500) {
+        return res.status(400).send('Content is too long!');
+    }
+
     const q = 'INSERT INTO comments (user_id, book_id, content) VALUES (?, ?, ?)';
     try {
         db.prepare(q).run(user_id, book_id, content);
