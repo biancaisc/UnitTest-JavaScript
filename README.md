@@ -154,6 +154,9 @@ Analiză valori de frontieră:
    - status cod 400 cu mesaj de eroare cu toate câmpurile sunt obligatorii
 
 ### 2. Testare structurală
+## CFG
+
+![image](https://github.com/user-attachments/assets/33d9151d-cdc4-4c58-ab89-6a6d1d69ca40)
 
 ## Acoperire la nivel de instructiunie (statement coverage)
 
