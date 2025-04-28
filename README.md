@@ -279,6 +279,7 @@ Pentru aceasta testare s-au generat 52 de mutanti, dintre care 7 au supravietuit
 ![image](https://github.com/user-attachments/assets/8313eb4f-16bf-473c-8a90-017a512a2cc1)
 
 Observatii:
+
 1.
 
 Query SQL gol (StringLiteral)
