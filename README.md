@@ -255,12 +255,25 @@ Astfel, testele urmatoare acopera aceste conditii din cadrul deciziilor.
 | 1 | null | 1 | 400 + "All fields are required." | decizia 1 - o conditie true una false |
 | "1" | "Valid comment" | 1 | 400 + "Invalid book id!" | decizia 2 - o conditie true una false|
 | -1 | "Valid comment" | 1 | 400 + "Invalid book id!" | decizia 2 - o conditie true una false |
+| 7 | "This is a valid comment" | 1 | 201 + "Comment added successfully." | decizia 1 - ambele false, decizia 2 - ambele false |
 
-**Acoperire la nivel de condiție/decizie (condition/decision coverage)**
-**Acoperire la nivel de condiții multiple (multiple condition coverage)**
+## Acoperire la nivel de condiție/decizie (condition/decision coverage)
 
+In cadrul acestei acoperiri, trebuie sa atingem atat valorile true si false pentru conditii, cat si valorile true si false pentru decizii.
+Testele pe care le-am scris acopera aceste cazuri.
+
+| book_id | content | user_id | Rezultat afișat | Instrucțiuni parcurse |
+|---------|---------|---------|-----------------|-----------------------|
+| null | null | 1 | 400 + "All fields are required." | decizia 1 - ambele conditii true |
+| null | "continut" | 1 | 400 + "All fields are required." | decizia 1 - o conditie true una false |
+| 1 | null | 1 | 400 + "All fields are required." | decizia 1 - o conditie true una false |
+| "1" | "Valid comment" | 1 | 400 + "Invalid book id!" | decizia 2 - o conditie true una false|
+| -1 | "Valid comment" | 1 | 400 + "Invalid book id!" | decizia 2 - o conditie true una false |
+| 7 | "This is a valid comment" | 1 | 201 + "Comment added successfully." | decizia 1 - ambele false, decizia 2 - ambele false |
 
 ### Teste pentru get comments
+
+## Teste functionale
 
 Am împărțit funcția în mai multe cazuri:
  - totul merge bine: atunci funcția ar trebui să returneze statusul 200 și o listă de comentarii;
