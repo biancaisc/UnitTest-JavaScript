@@ -236,7 +236,26 @@ Testele acoperă aceste decizii, dar și structura try...catch
 | 1 | "This is a valid comment" | 1 | 201 + "Comment added successfully." | decizia 1 - ramura de false; decizia 2 ramura de false; decizia 3 ramura de false; decizia 4 ramura de false; try accepted |
 | 1 | "This is a valid comment" | 1 | 500 + "Error adding comment." | decizia 1 - ramura de false; decizia 2 ramura de false; decizia 3 ramura de false; decizia 4 ramura de false; try rejected => catch |
 
-**Acoperire la nivel de conditie (condtition coverage)**
+## Acoperire la nivel de conditie (condtition coverage)
+
+Acoperirea la nivel de conditie se refera la generarea de date de test astfel incat fiecare conditie dintr-o decizie sa fie atat true, cat si false.
+In cadrul functiei exista 4 decizii, dintre care doua dintre ele au cate doua conditii. 
+
+| decizie | conditie 1 | conditie 2 |
+|---------|------------|------------|
+|if(!book_id sau !content)|!book_id|!content|
+|if (typeof book_id !== 'number' || book_id <= 0)|typeof book_id !== 'number'|book_id <= 0|
+
+Astfel, testele urmatoare acopera aceste conditii din cadrul deciziilor.
+
+| book_id | content | user_id | Rezultat afișat | Instrucțiuni parcurse |
+|---------|---------|---------|-----------------|-----------------------|
+| null | null | 1 | 400 + "All fields are required." | decizia 1 - ambele conditii true |
+| null | "continut" | 1 | 400 + "All fields are required." | decizia 1 - o conditie true una false |
+| 1 | null | 1 | 400 + "All fields are required." | decizia 1 - o conditie true una false |
+| "1" | "Valid comment" | 1 | 400 + "Invalid book id!" | decizia 2 - o conditie true una false|
+| -1 | "Valid comment" | 1 | 400 + "Invalid book id!" | decizia 2 - o conditie true una false |
+
 **Acoperire la nivel de condiție/decizie (condition/decision coverage)**
 **Acoperire la nivel de condiții multiple (multiple condition coverage)**
 
