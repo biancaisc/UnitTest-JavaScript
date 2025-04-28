@@ -271,6 +271,32 @@ Testele pe care le-am scris acopera aceste cazuri.
 | -1 | "Valid comment" | 1 | 400 + "Invalid book id!" | decizia 2 - o conditie true una false |
 | 7 | "This is a valid comment" | 1 | 201 + "Comment added successfully." | decizia 1 - ambele false, decizia 2 - ambele false |
 
+## Testare cu Mutanti
+
+Pentru aceasta testare s-au generat 52 de mutanti, dintre care 7 au supravietuit.
+
+![image](https://github.com/user-attachments/assets/69856601-f8de-4e17-a6f0-de20fa902276)
+![image](https://github.com/user-attachments/assets/8313eb4f-16bf-473c-8a90-017a512a2cc1)
+
+Observatii:
+1.
+Query SQL gol (StringLiteral)
+Mutantul a eliminat conținutul interogării SQL.
+Testele nu validează conținutul datelor returnate, doar status code-ul sau existența unui răspuns.
+2.
+Mesaje în console.error (StringLiteral)
+Modificarea mesajelor de eroare în console.error nu a afectat rezultatul testelor.
+3.
+Validarea book_id (EqualityOperator)
+Diferența dintre <= 0 și < 0 nu a fost detectată.
+4.
+Validarea lungimii content (EqualityOperator)
+Diferența între < 5 și <= 5 nu a fost detectată.
+Diferența între > 500 și >= 500 nu a fost detectată.
+5.
+Modificare ruta POST (StringLiteral)
+Schimbarea rutei din '/' în '' nu a afectat comportamentul, deoarece sunt echivalente în Express.js.
+
 ### Teste pentru get comments
 
 ## Teste functionale
@@ -460,7 +486,7 @@ Pentru imbunatatire:
   
  - La al doilea, schimbarea nu afectează functionarea aplicatiei
 
-  => Acesti mutanti pot supravietui fara a afecta functionarea aplicatiei
+  => Acesti mutanti pot supravietui fara a afecta aplicatia
   
  
     
