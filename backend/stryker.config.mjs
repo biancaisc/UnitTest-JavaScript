@@ -9,6 +9,6 @@ const config = {
   testRunner_comment:
     "Take a look at https://stryker-mutator.io/docs/stryker-js/jest-runner for information about the jest plugin.",
   coverageAnalysis: "perTest",
-  mutate: ["routes/reviewsFunction.js"],
+  mutate: ["routes/reviews.js"],
 };
 export default config;
