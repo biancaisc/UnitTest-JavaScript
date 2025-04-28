@@ -301,7 +301,7 @@ Analiza valori de frontieră:
 ### 2. Testare structurala
 **Graful de flux de control**
 
-![control flow graph](https://github.com/user-attachments/assets/b4ca926f-7f3c-477f-ba2c-10c8d0b6587a)
+![control flow graph 2](https://github.com/user-attachments/assets/40cc52df-c003-4ab3-af14-ee0f4a47b110)
 
 **Instructiuni**
 
