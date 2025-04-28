@@ -163,6 +163,26 @@ Analiză valori de frontieră:
 
 ![image](https://github.com/user-attachments/assets/33d9151d-cdc4-4c58-ab89-6a6d1d69ca40)
 
+## Teste
+## Test 1
+![image](https://github.com/user-attachments/assets/4ee33926-5f4b-4308-b44a-9c96a4af93ec)
+## Test 2
+![image](https://github.com/user-attachments/assets/ecb7c033-1eba-4796-869f-0596817942c8)
+## Test 3
+![image](https://github.com/user-attachments/assets/e471ba7c-bac1-4a0b-8b40-b4e2ff5b52a6)
+## Test 4
+![image](https://github.com/user-attachments/assets/a4303ab6-a4f7-4ede-b08d-ca07e110c4eb)
+## Test 5
+![image](https://github.com/user-attachments/assets/ac6ec37e-ca16-4064-b3dd-b3869627c2c9)
+## Test 6
+![image](https://github.com/user-attachments/assets/46f634aa-3041-4e48-aa76-c860d9d04883)
+## Test 7
+![image](https://github.com/user-attachments/assets/2fc5ead8-1c21-48c6-a3e3-41a8b33b8f8e)
+## Test 8
+![image](https://github.com/user-attachments/assets/3463d377-1c42-4108-a7eb-0ebf0c57141f)
+## Test 9
+![image](https://github.com/user-attachments/assets/8c3852aa-4407-4ddd-becf-c677fce1cd44)
+
 ## Acoperire la nivel de instructiunie (statement coverage)
 
 **Ne concentrăm ca fiecare instrucțiune (nod al grafului) să fie parcurs măcar o dată**  
