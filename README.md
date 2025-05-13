@@ -512,7 +512,7 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 
 ![functie drawio](https://github.com/user-attachments/assets/69dd71b2-1479-41aa-9558-8ad770790d8d)
 
-1. **Testare Funcțională**
+1. **Testare Funcțională**  - testele se găsesc în branch-ul **_library-testing_** în folderul **_backend/functional_tests_**
 
    - Partiționare de echivalență (equivalence partitioning)
       
@@ -653,7 +653,7 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
         | " " | "a-1-2" | - | 400 + "Invalid user id or book id provided." |
         | "100" | "101" | Eroare DB | 500 + "There is an error processing your request." |
 
-2. **Testare Structurală**
+2. **Testare Structurală** - testele se găsesc în branch-ul **_library-testing_** în folderul **_backend/structural_tests_**
     - **Graful de flux de control** al programului (CFG) 
 
     ![graf-functie drawio (1) drawio](https://github.com/user-attachments/assets/4c626583-8af8-4881-867c-e481976a4d53)
@@ -799,6 +799,8 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
     Au fost generate 32 de mutanți pe baza codului sursă.
 
     Pentru rularea testelor a fost folosit test runner-ul jest cu analiză perTest pentru acoperirea codului.
+
+    Rezultatele se găsesc în branch-ul **_library-testing_** în folderul **_backend/reports/mutation/mutation.html_**.
 
     Rezultate obținute:
 
