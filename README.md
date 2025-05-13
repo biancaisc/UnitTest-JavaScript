@@ -818,7 +818,7 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
         
         - testele au fost împărțite în teste funcționale (Equivalence Partitioning, Boundary Value Analysis, Category Partitioning) și teste structurale (Statement și Condition Coverage)
         
-        - mjoritatea mutanților au fost corect detectați de teste, indicând o acoperire bună a cazurilor de eroare și a fluxurilor normale
+        - majoritatea mutanților au fost corect detectați de teste, indicând o acoperire bună a cazurilor de eroare și a fluxurilor normale
         
         - mutanții supraviețuitori au fost în principal modificări asupra literalelor de string folosite în interogările SQL sau mesajele de eroare (console.error), sugerând că testele nu verifică explicit aceste mesaje sau interogări
 
@@ -862,23 +862,23 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 
 
 ## Bibliografie
-[1] <https://jestjs.io/docs/getting-started>
+[1] <https://jestjs.io/docs/getting-started>, data ultimei accesări: 8 aprilie 2025
 
-[2] <https://www.geeksforgeeks.org/testing-with-jest/>
+[2] <https://www.geeksforgeeks.org/testing-with-jest/>, data ultimei accesări: 8 aprilie 2025
 
-[3] <https://devhints.io/jest>
+[3] <https://devhints.io/jest>, data ultimei accesări: 8 aprilie 2025
 
-[4] <https://www.geeksforgeeks.org/how-to-test-react-components-using-jest/>
+[4] <https://www.geeksforgeeks.org/how-to-test-react-components-using-jest/>, data ultimei accesări: 8 aprilie 2025
 
-[5] <https://medium.com/@dilip.bhaidiya/mastering-react-js-testing-with-jest-a-comprehensive-guide-1acada2b9586>
+[5] <https://medium.com/@dilip.bhaidiya/mastering-react-js-testing-with-jest-a-comprehensive-guide-1acada2b9586>, data ultimei accesări: 8 aprilie 2025
 
-[6] <https://stryker-mutator.io/docs/stryker-js/introduction/>
+[6] <https://stryker-mutator.io/docs/stryker-js/introduction/>, data ultimei accesări: 8 aprilie 2025
 
-[7] <https://yumasoft.pl/how-to-use-strykerjs-with-jest-and-typescript-3/>
+[7] <https://yumasoft.pl/how-to-use-strykerjs-with-jest-and-typescript-3/>, data ultimei accesări: 8 aprilie 2025
 
-[8] <https://jestjs.io/docs/mock-function-api>
+[8] <https://jestjs.io/docs/mock-function-api>, data ultimei accesări: 26 aprilie 2025
 
-[9] <https://www.lambdatest.com/learning-hub/structural-testing>
+[9] <https://www.lambdatest.com/learning-hub/structural-testing>, data ultimei accesări: 26 aprilie 2025
   
 
 
