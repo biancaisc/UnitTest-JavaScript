@@ -859,9 +859,6 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
        
        - am validat ordinea și conținutul apelurilor către db.prepare folosind **mock.calls** [3]
 
- ### Rezultate teste functionale
- ![image](https://github.com/user-attachments/assets/5692ca35-209b-418e-b80a-2d5068df0764)
-
 
 ## Bibliografie
 [1] <https://jestjs.io/docs/getting-started>, data ultimei accesări: 8 aprilie 2025
