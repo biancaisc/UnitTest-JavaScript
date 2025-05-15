@@ -115,15 +115,14 @@ Framework de mutation testing: **StrykerJS** [6] (ajută la evaluarea calități
 
 ### 1. Testare funcțională
 
+Intrări:
+ - book_id pentru comment (poate fi dat un book_id valid, un book_id invalid sau null)
+ - content pentru comment (poate fi dat un content valid, un content invalid sau null)
+
 Am împărțit funcția în mai multe cazuri: 
  - datele sunt corecte: atunci funcția ar trebui să returneze statusul 201 și să returneze textul: 'Comment added succesfully!';
  - datele nu sunt corecte pentru că nu este dat book_id: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'All fields are required!';
  - datele nu sunt corecte pentru că nu este dat content: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'All fields are required!';
-
-Intrări:
- - user_id 
- - book_id pentru comment (poate fi dat un book_id valid sau null)
- - content pentru comment (poate fi dat un content valid sau null)
    
 Partiționare în categorii:
 
