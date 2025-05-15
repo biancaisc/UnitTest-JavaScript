@@ -1,6 +1,7 @@
 // @ts-check
 /** @type {import('@stryker-mutator/api/core').PartialStrykerOptions} */
 const config = {
+  mutate: ["routes/library.js", "routes/reviews.js"],
   _comment:
     "This config was generated using 'stryker init'. Please take a look at: https://stryker-mutator.io/docs/stryker-js/configuration/ for more information.",
   packageManager: "npm",
@@ -9,6 +10,5 @@ const config = {
   testRunner_comment:
     "Take a look at https://stryker-mutator.io/docs/stryker-js/jest-runner for information about the jest plugin.",
   coverageAnalysis: "perTest",
-  mutate: ["routes/reviews.js"],
 };
 export default config;
