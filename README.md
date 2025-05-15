@@ -116,41 +116,58 @@ Framework de mutation testing: **StrykerJS** [6] (ajută la evaluarea calități
 ### 1. Testare funcțională
 
 Intrări:
+
  - book_id pentru comment (poate fi dat un book_id valid, un book_id invalid sau null)
  - content pentru comment (poate fi dat un content valid, un content invalid sau null)
 
-Am împărțit funcția în mai multe cazuri: 
- - datele sunt corecte: atunci funcția ar trebui să returneze statusul 201 și să returneze textul: 'Comment added succesfully!';
- - datele nu sunt corecte pentru că nu este dat book_id: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'All fields are required!';
- - datele nu sunt corecte pentru că nu este dat content: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'All fields are required!';
-   
-Partiționare în categorii:
+Partiționare de echivalență:
 
-Se disting următoarele categorii:
+  - datele sunt corecte: atunci funcția ar trebui să returneze statusul 201 și să returneze textul: 'Comment added succesfully!';
+  - datele nu sunt corecte pentru că nu este dat book_id și/sau pentru că nu este dat content: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'All fields are required!';
+  - datele nu sunt corecte pentru că lungimea content este prea scurtă: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'Content is too short!';
+  - datele nu sunt corecte pentru că lungimea content este prea lungă: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'Content is too long!';
+  - datele nu sunt corecte pentru că book_id este invalid (fie este string fie are o valoare <=0 );
 
+    E_11 = { (book_id, content) | book_id ∈ B_1 ∧ content ∈ C_1 ∧ book_id ∈ BV_1 ∧ content ∈ CV_1 } → 201 'Comment added successfully!'
+
+    E_21 = { (book_id, content) | book_id ∈ B_2 ∧ content ∈ C_1 } → 400 'All fields are required!'
+    E_12 = { (book_id, content) | book_id ∈ B_1 ∧ content ∈ C_2 } → 400 'All fields are required!'
+    
+    E_31 = { book_id ∈ BV_2 ∧ content ∈ CV_1 } → 400 'Invalid book ID!'
+    E_32 = { book_id ∈ BV_1 ∧ content.length < 5 } → 400 'Content is too short!'
+    E_33 = { book_id ∈ BV_1 ∧ content.length > 500 } → 400 'Content is too long!'
+
+Analiza valorilor de frontieră:
+a) book_id <=0
+b) lungime content <5 sau >500
+
+Partiționarea în categorii:
 a) Existența sau absența book_id
 
-    B_1 = { book_id | book_id este prezent }
-    B_2 = { book_id | book_id este lipsă }
-
+     B_1 = { book_id | book_id este prezent }
+     B_2 = { book_id | book_id este lipsă }
+     
 b) Existența sau absența content
 
     C_1 = { content | content este prezent }
     C_2 = { content | content este lipsă }
 
-Partiționare de echivalență:
+c) book_id valid sau invalid
 
-    E_11 = { (book_id, content) | book_id ∈ B_1 ∧ content ∈ C_1 } → 201 cu mesajul 'Comment added successfully!'
-    E_21 = { (book_id, content) | book_id ∈ B_2 ∧ content ∈ C_1 } → 400 cu mesajul 'All fields are required!'
-    E_12 = { (book_id, content) | book_id ∈ B_1 ∧ content ∈ C_2 } → 400 cu mesajul 'All fields are required!'
+   BV_1 = { book_id | book_id valid }
+   BV_2 = { book_id | book_id invalid }
 
-Analiză valori de frontieră:
+d) content valid sau invalid
 
-    Pentru această funcție nu avem valori de frontieră.
+   CV_1 = { content | content este valid }
+   CV_2 = { content | content este invalid }
 
 **Domeniul de ieșiri**
    - status cod 201 cu mesaj de succes
    - status cod 400 cu mesaj de eroare cu toate câmpurile sunt obligatorii
+   - status cod 400 cu mesaj de eroare cu lungime content prea scurta
+   - status cod 400 cu mesaj de eroare cu lungime content prea lunga
+   - status cod 400 cu mesaj de eroare cu book_id invalid
 
 ### 2. Testare structurală
 
