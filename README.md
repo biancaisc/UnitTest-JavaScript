@@ -381,7 +381,8 @@ Partiționare de echivalență:
     C₁₄ = { (rating, book_id, review) | rating ∈ R_valid ∧ book_id ∈ B_present ∧ review ∈ RV_exists } → 400, 'You have already added a review for this book.'
     C₁₅ = { (rating, book_id, _) | rating ∈ R_lt_1 ∧ book_id ∈ B_null } → 400, 'All fields are required!'
     C₁₆ = { (rating, book_id, _) | rating ∈ R_gt_5 ∧ book_id ∈ B_null } → 400, 'All fields are required!'
-    C₁₇ = { (rating, book_id, _) | rating ∈ R_null } → 400, 'All fields are required!'
+    C₁₇ = { (rating, book_id, _) | rating ∈ R_valid ∧ book_id ∈ B_null } → 400, 'All fields are required!'
+    C₁₈ = { (rating, book_id, _) | rating ∈ R_null } → 400, 'All fields are required!'
 
 Analiza valori de frontieră:
 
