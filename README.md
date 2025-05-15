@@ -131,17 +131,23 @@ Partiționare de echivalență:
     E_11 = { (book_id, content) | book_id ∈ B_1 ∧ content ∈ C_1 ∧ book_id ∈ BV_1 ∧ content ∈ CV_1 } → 201 'Comment added successfully!'
 
     E_21 = { (book_id, content) | book_id ∈ B_2 ∧ content ∈ C_1 } → 400 'All fields are required!'
+    
     E_12 = { (book_id, content) | book_id ∈ B_1 ∧ content ∈ C_2 } → 400 'All fields are required!'
     
     E_31 = { book_id ∈ BV_2 ∧ content ∈ CV_1 } → 400 'Invalid book ID!'
+    
     E_32 = { book_id ∈ BV_1 ∧ content.length < 5 } → 400 'Content is too short!'
+    
     E_33 = { book_id ∈ BV_1 ∧ content.length > 500 } → 400 'Content is too long!'
 
 Analiza valorilor de frontieră:
+
 a) book_id <=0
+
 b) lungime content <5 sau >500
 
 Partiționarea în categorii:
+
 a) Existența sau absența book_id
 
      B_1 = { book_id | book_id este prezent }
