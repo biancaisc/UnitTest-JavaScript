@@ -27,6 +27,7 @@ describe('POST /reviews', () => {
   /// 1. if (!book_id || !rating)  
   // Condition Coverage
   // Statement Coverage
+  // Branch Coverage, Decision/Condition Coverage
   test('should return 400 if book_id is missing', async () => {
     const response = await request(app)
       .post('/reviews')
@@ -60,6 +61,8 @@ describe('POST /reviews', () => {
   ///2.  if (isNaN(rating) || rating < 1 || rating > 5)
   // Condition Coverage
   // Statement Coverage
+  // Branch Coverage, Decision/Condition Coverage
+
   test('should return 400 if rating is not a number', async () => {
     const response = await request(app)
       .post('/reviews')
@@ -90,6 +93,7 @@ describe('POST /reviews', () => {
   /// 3.  if(existingReview) 
   // Condition coverage
   // Statement Coverage
+  // Branch Coverage, Decision/Condition Coverage
   test('should return 400 if user already reviewed the book', async () => {
     db.prepare.mockImplementation((query) => {
       if (query.includes('SELECT')) {
@@ -107,7 +111,8 @@ describe('POST /reviews', () => {
     expect(response.text).toBe('You have already added a review for this book.');
   });
 
-  // Condition/decision coverage, Branch coverage for 1, 2, and 3
+  // Condition/decision coverage
+  // Branch coverage 
   // Statement coverage
   test('should insert review and return 201 if no duplicate exists', async () => {
     db.prepare.mockImplementation((query) => {
