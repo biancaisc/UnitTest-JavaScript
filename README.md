@@ -65,7 +65,7 @@ prin înlocuirea dependențelor reale cu obiecte simulate, am testat fără a ut
 
 Framework de testare: **Jest** ( are suport activ, necesita o configurare minima si este de preferat pentru aplicatii web care folosesc React) [2]
 
-Utilizare **Babel** [1] :  **Babel** este folosit pentru a transpila codul JavaScript modern într-un format compatibil cu mediul Node.js, permițându-ne să rulăm testele unitare pe codul backend al aplicației fără a întâmpina probleme de compatibilitate.
+Utilizare **Babel** [1] :  **Babel** este folosit pentru a transforma codul JavaScript modern într-un format compatibil cu mediul Node.js, permițându-ne să rulăm testele unitare pe codul backend al aplicației fără a întâmpina probleme de compatibilitate.
 
 Framework de mutation testing: **StrykerJS** [6] (ajută la evaluarea calității testelor existente, introducând modificări minore în cod și verificând dacă testele pot detecta aceste schimbări)
 
