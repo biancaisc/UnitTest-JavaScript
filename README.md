@@ -86,7 +86,7 @@ Framework de mutation testing: **StrykerJS** [6] (ajută la evaluarea calități
     
  4. Director teste
  
-    Pentru fiecare tip de testare includem fișierele de test specifice pentru fiecare funcție. Folderul ***functional_tests*** include fișierele de testare funcțională pentru funcțiile alese. Folderul ***structural_tests*** include fișierele de testare structurală.
+    Pentru fiecare tip de testare includem fișierele de test specifice pentru fiecare funcție. Folderul ***backend/functional_tests*** include fișierele de testare funcțională pentru funcțiile alese. Folderul ***backend/structural_tests*** include fișierele de testare structurală.
     
     
  5. Rularea testelor
@@ -97,7 +97,7 @@ Framework de mutation testing: **StrykerJS** [6] (ajută la evaluarea calități
 
    ```npx jest --coverage```
 
-   Jest include această comandă pentru a măsura cât din codul sursă este acoperit de teste, generând și un raport de acoperire a testelor.
+   Jest include această comandă pentru a măsura cât din codul sursă este acoperit de teste, generând și un raport de acoperire a testelor, care se găsește în folderul _backend/coverage_.
    
 ## Setup pentru testare cu StrykerJS [7]
  
