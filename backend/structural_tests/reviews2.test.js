@@ -2,9 +2,10 @@ import request from 'supertest';
 import express from 'express';
 import router from '../routes/reviews.js';
 import { db } from '../.config.js';
+import { verifyToken } from '../routes/authentification.js';
 
 jest.mock('../routes/authentification.js', () => ({
-  token: (req, res, next) => {
+  verifyToken: (req, res, next) => {
     req.user = { id: 1 };
     next();
   }
@@ -140,7 +141,7 @@ describe('POST /reviews', () => {
 
   // Branch coverage
   // Statement coverage
-  
+
   test('should return 500 if database throws error', async () => {
     db.prepare.mockImplementation(() => {
       throw new Error('Database error');

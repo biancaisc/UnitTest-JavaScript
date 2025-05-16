@@ -4,7 +4,7 @@ import router from '../routes/reviews.js';
 import { db } from '../.config.js';
 
 jest.mock('../routes/authentification.js', () =>({
-  token: (req, res, next) =>{
+  verifyToken: (req, res, next) =>{
     req.user = { id: 1 }; 
     next();
   }
