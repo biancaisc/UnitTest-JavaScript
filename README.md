@@ -33,7 +33,7 @@ https://github.com/unibuc-cs/software-engineering-product-code-girls
 
 ### Demo aplicație
 
-https://www.youtube.com/watch?v=xHe0NP-Zy6
+[https://www.youtube.com/watch?v=xHe0NP-Zy6](https://www.youtube.com/watch?v=xHe0NP-Zy64)
 
 ## Testarea Funcțională
 Metodă de testare software care verifică dacă aplicația se comportă conform specificațiilor. Se concentrează pe „ce ar trebui să facă” aplicația, nu pe „cum este implementată”.
@@ -121,7 +121,12 @@ Framework de mutation testing: **StrykerJS** [6] (ajută la evaluarea calități
 
     StrykerJS va modifica codul sursă al aplicației (va crea mutanți), va rula testele și va raporta dacă testele au reușit să identifice mutanții.
 
+## Funcții testate
 
+   - [post comments](#teste-pentru-post-comments)
+   - [post reviews](#teste-pentru-post-reviews)
+   - [get book](#funcția-de-returnare-a-cărții-unui-utilizator)
+     
 ### Teste pentru post comments
 
 ### 1. Testare funcțională
@@ -346,39 +351,6 @@ Diferența între > 500 și >= 500 nu a fost detectată.
 Modificare ruta POST (StringLiteral)
 
 Schimbarea rutei din '/' în '' nu a afectat comportamentul, deoarece sunt echivalente în Express.js.
-
-### Teste pentru get comments
-
-## Teste functionale
-
-Am împărțit funcția în mai multe cazuri:
- - totul merge bine: atunci funcția ar trebui să returneze statusul 200 și o listă de comentarii;
- - nu sunt comentarii pentru acea cartea introdusă: atunci funcția ar trebui să returneze statusul 404 și mesajul: 'No comments found for this book!';
- - dacă apare o eroare neprevăzută: atunci funcția ar trebui să returneze statusul 500 și mesajul: 'Error fetching comments!';
-
-Intrări:
- - book_id
-
-Se disting următoarele categorii:
-
-    B_1 = { book_id | carte existentă și are comentarii }
-    B_2 = { book_id | carte existentă dar fără comentarii }
-    B_3 = { book_id | carte validă dar apare o eroare în timpul procesării }
-
-Partiționare de echivalență:
-
-    C_1 = { book_id | book_id ∈ B_1 } → 200 cu lista de comentarii
-    C_2 = { book_id | book_id ∈ B_2 } → 404 cu mesajul 'No comments found for this book!'
-    C_3 = { book_id | book_id ∈ B_3 } → 500 cu mesajul 'Error fetching comments!'
-
-Analiză valori de frontieră:
-
-    Pentru această funcție nu avem valori de frontieră.
-
-**Domeniul de ieșiri**
-   - status cod 200 și o listă de comentarii
-   - status cod 404 cu mesaj de eroare care să spună că nu au fost adăugate comentarii pentru cartea respectivă
-   - status cod 500 cu mesaj de eroare 
 
 ### Teste pentru post reviews
 Functia adauga un review nou
@@ -915,7 +887,7 @@ Rulând testele cu `npx jest --coverage`, am obținut o acoperire de 100%:
 
 ## Demo rulare teste
 
-https://youtu.be/YMMQ8WbqSx0
+[https://youtu.be/YMMQ8WbqSx0](https://www.youtube.com/watch?v=YMMQ8WbqSx0)
 
 ## Raport AI
 
