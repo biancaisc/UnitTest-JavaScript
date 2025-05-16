@@ -86,14 +86,16 @@ Framework de mutation testing: **StrykerJS** [6] (ajută la evaluarea calități
     
  4. Director teste
  
-    Pentru fiecare tip de testare includem fișierele de test specifice pentru fiecare funcție. Folderul ***backend/functional_tests*** include fișierele de testare funcțională pentru funcțiile alese. Folderul ***backend/structural_tests*** include fișierele de testare structurală.
+    Pentru fiecare tip de testare includem fișierele de test specifice pentru fiecare funcție.
+    - folderul ***backend/functional_tests*** include fișierele de testare funcțională 
+    - folderul ***backend/structural_tests*** include fișierele de testare structurală
     
     
- 5. Rularea testelor
+ 6. Rularea testelor
  
     ```npm test```
 
-6. Acoperirea testelor [10]
+7. Acoperirea testelor [10]
 
    ```npx jest --coverage```
 
@@ -124,6 +126,10 @@ Framework de mutation testing: **StrykerJS** [6] (ajută la evaluarea calități
     ```npx stryker run```
 
     StrykerJS va modifica codul sursă al aplicației (va crea mutanți), va rula testele și va raporta dacă testele au reușit să identifice mutanții.
+
+4. Generare raport
+
+   Raportul generat se găsește în fișierul _backend/report/mutation/mutation.html_, cuprinzând atât mutanții care au supraviețuit, cât și cei care au fost omorăți.
 
 ## Funcții testate
 
