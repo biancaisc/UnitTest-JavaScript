@@ -108,7 +108,7 @@ describe("GET /id/:user_id - Structural testing", () => {
             
             test('invalid user + valid book input', async () => {
                 const consoleSpy = jest.spyOn(console, 'error');
-                const response = await request(app).get('/user123?/10');
+                const response = await request(app).get('/user123/10');
                 
                 expect(response.status).toBe(400);
                 expect(response.text).toBe("Invalid user id or book id provided.");
@@ -147,8 +147,8 @@ describe("GET /id/:user_id - Structural testing", () => {
                 
                 expect(response.status).toBe(200);
                 expect(response.body).toEqual({
-                    user_id: 1,
-                    book_id: 1,
+                    user_id: 10,
+                    book_id: 5,
                     readit: true
                 });
                 expect(mockPrepare).toHaveBeenCalledWith("SELECT * FROM library WHERE user_id = ? AND book_id = ?");
