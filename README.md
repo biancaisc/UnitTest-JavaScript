@@ -31,6 +31,14 @@ Aplicația oferă funcții de căutare și organizarea cărților pe categorii, 
 
 https://github.com/unibuc-cs/software-engineering-product-code-girls
 
+### Demo aplicație
+
+[https://github.com/unibuc-cs/software-engineering-product-code-girls](https://www.youtube.com/watch?v=xHe0NP-Zy6
+
+### Demo pentru rularea testelor
+
+https://www.youtube.com/watch?v=vgZme7WS_WE
+
 ## Testarea Funcțională
 Metodă de testare software care verifică dacă aplicația se comportă conform specificațiilor. Se concentrează pe „ce ar trebui să facă” aplicația, nu pe „cum este implementată”.
 
