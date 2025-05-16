@@ -1,10 +1,10 @@
 import request from 'supertest';
 import express from 'express';
-import reviewsRouter from '../routes/reviews.js';
+import router from '../routes/reviews.js';
 import { db } from '../.config.js';
 
 jest.mock('../routes/authentification.js', () => ({
-  verifyToken: (req, res, next) => {
+  token: (req, res, next) => {
     req.user = { id: 1 };
     next();
   }
@@ -17,14 +17,16 @@ jest.mock('../.config.js', () => ({
 
 const app = express();
 app.use(express.json());
-app.use('/reviews', reviewsRouter);
+app.use('/reviews', router);
 
 describe('POST /reviews', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  // book_id null
+  /// 1. if (!book_id || !rating)  
+  // Condition Coverage
+  // Statement Coverage
   test('should return 400 if book_id is missing', async () => {
     const response = await request(app)
       .post('/reviews')
@@ -34,7 +36,7 @@ describe('POST /reviews', () => {
     expect(response.text).toBe('All fields are required!');
   });
 
-  //  rating null
+  
   test('should return 400 if rating is missing', async () => {
     const response = await request(app)
       .post('/reviews')
@@ -44,7 +46,7 @@ describe('POST /reviews', () => {
     expect(response.text).toBe('All fields are required!');
   });
 
-  // rating null, book_id null
+
   test('should return 400 if both rating and book_id is missing', async () => {
     const response = await request(app)
       .post('/reviews')
@@ -54,7 +56,10 @@ describe('POST /reviews', () => {
     expect(response.text).toBe('All fields are required!');
   });
 
-  // isNaN(rating)
+
+  ///2.  if (isNaN(rating) || rating < 1 || rating > 5)
+  // Condition Coverage
+  // Statement Coverage
   test('should return 400 if rating is not a number', async () => {
     const response = await request(app)
       .post('/reviews')
@@ -64,7 +69,6 @@ describe('POST /reviews', () => {
     expect(response.text).toBe('Rating must be a number between 1 and 5.');
   }); 
 
-  // rating < 1
   test('should return 400 if rating is less than 1', async () => {
     const response = await request(app)
       .post('/reviews')
@@ -74,7 +78,6 @@ describe('POST /reviews', () => {
     expect(response.text).toBe('Rating must be a number between 1 and 5.');
   });
 
-  // rating > 5
   test('should return 400 if rating is greater than 5', async () => {
     const response = await request(app)
       .post('/reviews')
@@ -84,7 +87,9 @@ describe('POST /reviews', () => {
     expect(response.text).toBe('Rating must be a number between 1 and 5.');
   });
 
-  // ramura if(existingReview) = true
+  /// 3.  if(existingReview) 
+  // Condition coverage
+  // Statement Coverage
   test('should return 400 if user already reviewed the book', async () => {
     db.prepare.mockImplementation((query) => {
       if (query.includes('SELECT')) {
@@ -102,7 +107,8 @@ describe('POST /reviews', () => {
     expect(response.text).toBe('You have already added a review for this book.');
   });
 
-  // ramura if(existingReview) != true
+  // Condition/decision coverage, Branch coverage for 1, 2, and 3
+  // Statement coverage
   test('should insert review and return 201 if no duplicate exists', async () => {
     db.prepare.mockImplementation((query) => {
       if (query.includes('SELECT')) {
@@ -124,7 +130,8 @@ describe('POST /reviews', () => {
     expect(response.text).toBe('Review added successfully!');
   });
 
-  // ramura catch(error) 
+  // Branch coverage
+  // Statement coverage
   test('should return 500 if database throws error', async () => {
     db.prepare.mockImplementation(() => {
       throw new Error('Database error');
@@ -138,3 +145,4 @@ describe('POST /reviews', () => {
     expect(response.text).toBe('Error adding review!');
   });
 });
+

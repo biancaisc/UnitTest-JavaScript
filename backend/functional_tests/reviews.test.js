@@ -1,10 +1,10 @@
 import request from 'supertest';
 import express from 'express';
-import reviewsRouter from '../routes/reviews.js';
+import router from '../routes/reviews.js';
 import { db } from '../.config.js';
 
 jest.mock('../routes/authentification.js', () =>({
-  verifyToken: (req, res, next) =>{
+  token: (req, res, next) =>{
     req.user = { id: 1 }; 
     next();
   }
@@ -17,7 +17,7 @@ jest.mock('../.config.js', ()=>({
 
 const app = express();
 app.use(express.json());
-app.use('/reviews', reviewsRouter);
+app.use('/reviews', router);
 
 describe('POST /reviews', () => {
 
