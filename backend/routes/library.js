@@ -38,34 +38,45 @@ const router = express.Router();
 //         res.status(500).send("There is an error processing your request.");
 //     }
 // });
+import { getUserBook } from "./libraryService.js";
 
 router.get("/:user_id/:book_id", (req, res) => {
     const { user_id, book_id } = req.params;
-    const q = "SELECT * FROM library WHERE user_id = ? AND book_id = ?";
-    
     try {
-        if(!user_id.trim() || !book_id.trim() || isNaN(user_id) || isNaN(book_id)){
-            console.error("Invalid user id or book id provided.");
-            return res.status(400).send("Invalid user id or book id provided.");
-        }
-        const book = db.prepare(q).get(user_id, book_id);
-
-        if (book) {
-            return res.status(200).json(book);
-        } else {
-            const userExists = db.prepare("SELECT * FROM library WHERE user_id = ?").get(user_id);
-            if (userExists) {
-                return res.status(404).send("The book is not in your library.");
-            }
-            else{
-                return res.status(404).send("The user does not exist.");
-            }
-        }
-    } catch (error) {
-        console.error("There is an error in userid+bookid : ", error.message);
-        res.status(500).send("There is an error processing your request.");
+        const result = getUserBook(db, user_id, book_id);
+        res.status(result.status).json(result.data);
+    } catch (err) {
+        res.status(err.status || 500).send(err.message || "Unknown error");
     }
 });
+
+// router.get("/:user_id/:book_id", (req, res) => {
+//     const { user_id, book_id } = req.params;
+//     const q = "SELECT * FROM library WHERE user_id = ? AND book_id = ?";
+    
+//     try {
+//         if(!user_id.trim() || !book_id.trim() || isNaN(user_id) || isNaN(book_id)){
+//             console.error("Invalid user id or book id provided.");
+//             return res.status(400).send("Invalid user id or book id provided.");
+//         }
+//         const book = db.prepare(q).get(user_id, book_id);
+
+//         if (book) {
+//             return res.status(200).json(book);
+//         } else {
+//             const userExists = db.prepare("SELECT * FROM library WHERE user_id = ?").get(user_id);
+//             if (userExists) {
+//                 return res.status(404).send("The book is not in your library.");
+//             }
+//             else{
+//                 return res.status(404).send("The user does not exist.");
+//             }
+//         }
+//     } catch (error) {
+//         console.error("There is an error in userid+bookid : ", error.message);
+//         res.status(500).send("There is an error processing your request.");
+//     }
+// });
 
 
 // router.post("/add", async (req, res) => {
