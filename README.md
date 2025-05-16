@@ -258,7 +258,7 @@ Testele acoperă aceste decizii, dar și structura try...catch
 | 1 | "This is a valid comment" | 1 | 201 + "Comment added successfully." | decizia 1 - ramura de false; decizia 2 ramura de false; decizia 3 ramura de false; decizia 4 ramura de false; try accepted |
 | 1 | "This is a valid comment" | 1 | 500 + "Error adding comment." | decizia 1 - ramura de false; decizia 2 ramura de false; decizia 3 ramura de false; decizia 4 ramura de false; try rejected => catch |
 
-## Acoperire la nivel de conditie (condtition coverage)
+## Acoperire la nivel de conditie (conditition coverage)
 
 Acoperirea la nivel de conditie se refera la generarea de date de test astfel incat fiecare conditie dintr-o decizie sa fie atat true, cat si false.
 In cadrul functiei exista 4 decizii, dintre care doua dintre ele au cate doua conditii. 
