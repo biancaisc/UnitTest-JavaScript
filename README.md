@@ -129,7 +129,7 @@ Framework de mutation testing: **StrykerJS** [6] (ajută la evaluarea calități
 
 4. Generare raport
 
-   Raportul generat se găsește în fișierul _backend/report/mutation/mutation.html_, cuprinzând atât mutanții care au supraviețuit, cât și cei care au fost omorăți.
+   Raportul generat se găsește în fișierul _backend/report/mutation/mutation.html_, cuprinzând atât mutanții care au supraviețuit, cât și cei care au fost omorâți.
 
 ## Funcții testate
 
