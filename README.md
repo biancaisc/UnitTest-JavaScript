@@ -35,10 +35,6 @@ https://github.com/unibuc-cs/software-engineering-product-code-girls
 
 https://www.youtube.com/watch?v=xHe0NP-Zy6
 
-### Demo pentru rularea testelor
-
-https://www.youtube.com/watch?v=vgZme7WS_WE
-
 ## Testarea Funcțională
 Metodă de testare software care verifică dacă aplicația se comportă conform specificațiilor. Se concentrează pe „ce ar trebui să facă” aplicația, nu pe „cum este implementată”.
 
@@ -86,11 +82,18 @@ Framework de mutation testing: **StrykerJS** [6] (ajută la evaluarea calități
     
  4. Director teste
  
-    Pentru fiecare tip de testare includem fișierele de test specifice pentru fiecare funcție. Folderul ***functional_tests*** include fișierele de testare funcțională pentru funcțiile alese.
+    Pentru fiecare tip de testare includem fișierele de test specifice pentru fiecare funcție. Folderul ***functional_tests*** include fișierele de testare funcțională pentru funcțiile alese. Folderul ***structural_tests*** include fișierele de testare structurală.
+    
     
  5. Rularea testelor
  
     ```npm test```
+
+6. Acoperirea testelor [10]
+
+   ```npx jest --coverage```
+
+   Jest include această comandă pentru a măsura cât din codul sursă este acoperit de teste, generând și un raport de acoperire a testelor.
    
 ## Setup pentru testare cu StrykerJS [7]
  
@@ -110,7 +113,7 @@ Framework de mutation testing: **StrykerJS** [6] (ajută la evaluarea calități
 
     ```mutate: ['routes/**.js']```
     
- 1. Rulare StrykerJS
+ 3. Rulare StrykerJS
 
     Pentru a rula mutation testing cu StrykerJS, se folosește comanda:
     
@@ -902,6 +905,23 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
        
        - am validat ordinea și conținutul apelurilor către db.prepare folosind **mock.calls** [3]
 
+## Rezultate
+
+![Screenshot 2025-05-16 170309](https://github.com/user-attachments/assets/7164a1ef-9092-4cd3-9706-f80aa27fff27)
+
+Rulând testele cu `npx jest --coverage`, am obținut o acoperire de 100%:
+
+![Screenshot 2025-05-16 170746](https://github.com/user-attachments/assets/bcbb81b8-bc47-443a-9399-3648609f7175)
+
+## Demo rulare teste
+
+https://youtu.be/YMMQ8WbqSx0
+
+## Raport AI
+
+Am folosit ChatGPT pentru a face o comparație între testele autogenerate și cele scrise de noi. Testele generate de AI au oferit o bază rapidă pentru verificarea funcționalității de bază, dar testele scrise manual de noi sunt mai complete și mai bine structurate. Ele acoperă toate tipurile importante de testare (funcțională, structurală, pe clase de echivalență, valori de frontiera, MC/DC etc.) și oferă un control mai precis asupra comportamentului aplicației. 
+
+Raportul complet se găsește în fișierul _Raport_AI.pdf_.
 
 ## Bibliografie
 [1] <https://jestjs.io/docs/getting-started>, data ultimei accesări: 8 aprilie 2025
@@ -921,7 +941,8 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 [8] <https://jestjs.io/docs/mock-function-api>, data ultimei accesări: 26 aprilie 2025
 
 [9] <https://www.lambdatest.com/learning-hub/structural-testing>, data ultimei accesări: 26 aprilie 2025
-  
+
+[10] <https://medium.com/walmartglobaltech/understanding-the-jest-coverage-report-a-complete-guide-966733d6f730>, data ultimei accesări: 26 aprilie 2026
 
 
 
