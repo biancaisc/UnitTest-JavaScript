@@ -49,10 +49,10 @@ Metodă de testare a calității testelor, care presupune introducerea unor modi
 Scopul acestei tehnici este de a evalua eficiența testelor: dacă un test nu detectează o modificare introdusă în cod, aceasta indică faptul că testul nu este suficient de robust sau acoperitor. Testarea de mutanți este folosită pentru a îmbunătăți calitatea și completitudinea suitei de teste.
 
 ## Testare cu Mock
-Metoda de testare software care simulează comportamentul dependențelor sau componentelor externe, permitand astfel testarea izolată a unor părți specifice din cod.
+Metoda de testare software care simulează comportamentul dependențelor sau componentelor externe, permițând astfel testarea izolată a unor părți specifice din cod. 
 
 **Cum am folosit in proiect ->**
-prin înlocuirea dependențelor reale cu obiecte simulate, am testat functional fara a utiliza servicii externe precum baza de date.
+prin înlocuirea dependențelor reale cu obiecte simulate, am testat fără a utiliza servicii externe precum baza de date, reușind să testăm și scenarii mai complexe(ex: erori de server).
 ## Tehnologii utilizate
 
 Framework de testare: **Jest** ( are suport activ, necesita o configurare minima si este de preferat pentru aplicatii web care folosesc React)
@@ -516,6 +516,18 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
        - fiecare decizie întreagă să fie și true și false
 
       Testele anterioare au acoperit aceste cazuri.
+
+      | user_id | book_id | Condiție acoperită | Decizie | Rezultat așteptat |
+      |----------|-------------|-------------------|---------------------|---------------------|
+      | " " | 1 | `!user_id.trim() = true`, restul condițiilor sunt false | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` --> true | 400 + "Invalid user id or book id provided." |
+      | 1 | " " | `!book_id.trim() = true`, restul condițiilor sunt false | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` --> true | 400 + "Invalid user id or book id provided." |
+      | "abc" | 1 | `isNaN(user_id) = true`, restul condițiilor sunt false | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` --> true | 400 + "Invalid user id or book id provided." |
+      | 1 | "abc" | `isNaN(book_id) = true`, restul condițiilor sunt false | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` --> true | 400 + "Invalid user id or book id provided." |
+      | "1" | "1" | toate condițiile individuale false | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` --> false | verificare existență carte | 
+      | "1" | "1" -cartea există | `book = true` | `if (book)` --> true | 200 + cartea găsită | 
+      | "1" | "2" -cartea nu există | `book = false` | `if (book)` --> false | verificare existență user |
+      | "1" -user există | "2" -cartea nu există | `userExists = true` | `if (userExists)` --> true | 404 + "The book is not in your library." |
+      | "999" -user inexistent | "1" | `userExists = false` | `if (userExists)` --> false | 404 + "The user does not exist." |
 
       e) Acoperire la nivel de condiții multiple (Multiple Condition Coverage)
 
