@@ -33,7 +33,7 @@ https://github.com/unibuc-cs/software-engineering-product-code-girls
 
 ### Demo aplicație
 
-[https://github.com/unibuc-cs/software-engineering-product-code-girls](https://www.youtube.com/watch?v=xHe0NP-Zy6
+https://www.youtube.com/watch?v=xHe0NP-Zy6
 
 ### Demo pentru rularea testelor
 
