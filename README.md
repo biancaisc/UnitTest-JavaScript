@@ -48,11 +48,11 @@ Metodă de testare a calității testelor, care presupune introducerea unor modi
 
 Scopul acestei tehnici este de a evalua eficiența testelor: dacă un test nu detectează o modificare introdusă în cod, aceasta indică faptul că testul nu este suficient de robust sau acoperitor. Testarea de mutanți este folosită pentru a îmbunătăți calitatea și completitudinea suitei de teste.
 
-## Testare cu Mock [5]
-Metoda de testare software care simulează comportamentul dependențelor sau componentelor externe, permițând astfel testarea izolată a unor părți specifice din cod.
+## Testare cu Mock
+Metoda de testare software care simulează comportamentul dependențelor sau componentelor externe, permițând astfel testarea izolată a unor părți specifice din cod. 
 
 **Cum am folosit in proiect ->**
-prin înlocuirea dependențelor reale cu obiecte simulate, am testat functional fara a utiliza servicii externe precum baza de date.
+prin înlocuirea dependențelor reale cu obiecte simulate, am testat fără a utiliza servicii externe precum baza de date, reușind să testăm și scenarii mai complexe(ex: erori de server).
 ## Tehnologii utilizate
 
 Framework de testare: **Jest** ( are suport activ, necesita o configurare minima si este de preferat pentru aplicatii web care folosesc React) [2]
@@ -115,43 +115,65 @@ Framework de mutation testing: **StrykerJS** [6] (ajută la evaluarea calități
 
 ### 1. Testare funcțională
 
-Am împărțit funcția în mai multe cazuri: 
- - datele sunt corecte: atunci funcția ar trebui să returneze statusul 201 și să returneze textul: 'Comment added succesfully!';
- - datele nu sunt corecte pentru că nu este dat book_id: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'All fields are required!';
- - datele nu sunt corecte pentru că nu este dat content: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'All fields are required!';
-
 Intrări:
- - user_id 
- - book_id pentru comment (poate fi dat un book_id valid sau null)
- - content pentru comment (poate fi dat un content valid sau null)
-   
-Partiționare în categorii:
 
-Se disting următoarele categorii:
+ - book_id pentru comment (poate fi dat un book_id valid, un book_id invalid sau null)
+ - content pentru comment (poate fi dat un content valid, un content invalid sau null)
+
+Partiționare de echivalență:
+
+  - datele sunt corecte: atunci funcția ar trebui să returneze statusul 201 și să returneze textul: 'Comment added succesfully!';
+  - datele nu sunt corecte pentru că nu este dat book_id și/sau pentru că nu este dat content: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'All fields are required!';
+  - datele nu sunt corecte pentru că lungimea content este prea scurtă: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'Content is too short!';
+  - datele nu sunt corecte pentru că lungimea content este prea lungă: atunci funcția ar trebui să returneze statusul 400 și să returneze textul: 'Content is too long!';
+  - datele nu sunt corecte pentru că book_id este invalid (fie este string fie are o valoare <=0 );
+
+    E_11 = { (book_id, content) | book_id ∈ B_1 ∧ content ∈ C_1 ∧ book_id ∈ BV_1 ∧ content ∈ CV_1 } → 201 'Comment added successfully!'
+
+    E_21 = { (book_id, content) | book_id ∈ B_2 ∧ content ∈ C_1 } → 400 'All fields are required!'
+    
+    E_12 = { (book_id, content) | book_id ∈ B_1 ∧ content ∈ C_2 } → 400 'All fields are required!'
+    
+    E_31 = { book_id ∈ BV_2 ∧ content ∈ CV_1 } → 400 'Invalid book ID!'
+    
+    E_32 = { book_id ∈ BV_1 ∧ content.length < 5 } → 400 'Content is too short!'
+    
+    E_33 = { book_id ∈ BV_1 ∧ content.length > 500 } → 400 'Content is too long!'
+
+Analiza valorilor de frontieră:
+
+a) book_id <=0
+
+b) lungime content <5 sau >500
+
+Partiționarea în categorii:
 
 a) Existența sau absența book_id
 
-    B_1 = { book_id | book_id este prezent }
-    B_2 = { book_id | book_id este lipsă }
-
+     B_1 = { book_id | book_id este prezent }
+     B_2 = { book_id | book_id este lipsă }
+     
 b) Existența sau absența content
 
     C_1 = { content | content este prezent }
     C_2 = { content | content este lipsă }
 
-Partiționare de echivalență:
+c) book_id valid sau invalid
 
-    E_11 = { (book_id, content) | book_id ∈ B_1 ∧ content ∈ C_1 } → 201 cu mesajul 'Comment added successfully!'
-    E_21 = { (book_id, content) | book_id ∈ B_2 ∧ content ∈ C_1 } → 400 cu mesajul 'All fields are required!'
-    E_12 = { (book_id, content) | book_id ∈ B_1 ∧ content ∈ C_2 } → 400 cu mesajul 'All fields are required!'
+   BV_1 = { book_id | book_id valid }
+   BV_2 = { book_id | book_id invalid }
 
-Analiză valori de frontieră:
+d) content valid sau invalid
 
-    Pentru această funcție nu avem valori de frontieră.
+   CV_1 = { content | content este valid }
+   CV_2 = { content | content este invalid }
 
 **Domeniul de ieșiri**
    - status cod 201 cu mesaj de succes
    - status cod 400 cu mesaj de eroare cu toate câmpurile sunt obligatorii
+   - status cod 400 cu mesaj de eroare cu lungime content prea scurta
+   - status cod 400 cu mesaj de eroare cu lungime content prea lunga
+   - status cod 400 cu mesaj de eroare cu book_id invalid
 
 ### 2. Testare structurală
 
@@ -236,7 +258,7 @@ Testele acoperă aceste decizii, dar și structura try...catch
 | 1 | "This is a valid comment" | 1 | 201 + "Comment added successfully." | decizia 1 - ramura de false; decizia 2 ramura de false; decizia 3 ramura de false; decizia 4 ramura de false; try accepted |
 | 1 | "This is a valid comment" | 1 | 500 + "Error adding comment." | decizia 1 - ramura de false; decizia 2 ramura de false; decizia 3 ramura de false; decizia 4 ramura de false; try rejected => catch |
 
-## Acoperire la nivel de conditie (condtition coverage)
+## Acoperire la nivel de conditie (condition coverage)
 
 Acoperirea la nivel de conditie se refera la generarea de date de test astfel incat fiecare conditie dintr-o decizie sa fie atat true, cat si false.
 In cadrul functiei exista 4 decizii, dintre care doua dintre ele au cate doua conditii. 
@@ -382,7 +404,8 @@ Partiționare de echivalență:
     C₁₄ = { (rating, book_id, review) | rating ∈ R_valid ∧ book_id ∈ B_present ∧ review ∈ RV_exists } → 400, 'You have already added a review for this book.'
     C₁₅ = { (rating, book_id, _) | rating ∈ R_lt_1 ∧ book_id ∈ B_null } → 400, 'All fields are required!'
     C₁₆ = { (rating, book_id, _) | rating ∈ R_gt_5 ∧ book_id ∈ B_null } → 400, 'All fields are required!'
-    C₁₇ = { (rating, book_id, _) | rating ∈ R_null } → 400, 'All fields are required!'
+    C₁₇ = { (rating, book_id, _) | rating ∈ R_valid ∧ book_id ∈ B_null } → 400, 'All fields are required!'
+    C₁₈ = { (rating, book_id, _) | rating ∈ R_null } → 400, 'All fields are required!'
 
 Analiza valori de frontieră:
 
@@ -512,7 +535,7 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 
 ![functie drawio](https://github.com/user-attachments/assets/69dd71b2-1479-41aa-9558-8ad770790d8d)
 
-1. **Testare Funcțională**
+1. **Testare Funcțională**  - testele se găsesc în branch-ul **_library-testing_** în folderul **_backend/functional_tests_**
 
    - Partiționare de echivalență (equivalence partitioning)
       
@@ -653,7 +676,7 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
         | " " | "a-1-2" | - | 400 + "Invalid user id or book id provided." |
         | "100" | "101" | Eroare DB | 500 + "There is an error processing your request." |
 
-2. **Testare Structurală**
+2. **Testare Structurală** - testele se găsesc în branch-ul **_library-testing_** în folderul **_backend/structural_tests_**
     - **Graful de flux de control** al programului (CFG) 
 
     ![graf-functie drawio (1) drawio](https://github.com/user-attachments/assets/4c626583-8af8-4881-867c-e481976a4d53)
@@ -731,6 +754,18 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 
       Testele anterioare au acoperit aceste cazuri.
 
+      | user_id | book_id | Condiție acoperită | Decizie | Rezultat așteptat |
+      |----------|-------------|-------------------|---------------------|---------------------|
+      | " " | 1 | `!user_id.trim() = true`, restul condițiilor sunt false | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` --> true | 400 + "Invalid user id or book id provided." |
+      | 1 | " " | `!book_id.trim() = true`, restul condițiilor sunt false | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` --> true | 400 + "Invalid user id or book id provided." |
+      | "abc" | 1 | `isNaN(user_id) = true`, restul condițiilor sunt false | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` --> true | 400 + "Invalid user id or book id provided." |
+      | 1 | "abc" | `isNaN(book_id) = true`, restul condițiilor sunt false | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` --> true | 400 + "Invalid user id or book id provided." |
+      | "1" | "1" | toate condițiile individuale false | `if(!user_id.trim() \|\| !book_id.trim() \|\| isNaN(user_id) \|\| isNaN(book_id))` --> false | verificare existență carte | 
+      | "1" | "1" -cartea există | `book = true` | `if (book)` --> true | 200 + cartea găsită | 
+      | "1" | "2" -cartea nu există | `book = false` | `if (book)` --> false | verificare existență user |
+      | "1" -user există | "2" -cartea nu există | `userExists = true` | `if (userExists)` --> true | 404 + "The book is not in your library." |
+      | "999" -user inexistent | "1" | `userExists = false` | `if (userExists)` --> false | 404 + "The user does not exist." |
+
       e) Acoperire la nivel de condiții multiple (Multiple Condition Coverage)
 
       Avem o decizie care cuprinde condiții multiple:
@@ -800,6 +835,8 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
 
     Pentru rularea testelor a fost folosit test runner-ul jest cu analiză perTest pentru acoperirea codului.
 
+    Rezultatele se găsesc în branch-ul **_library-testing_** în folderul **_backend/reports/mutation/mutation.html_**.
+
     Rezultate obținute:
 
         Mutanți testați: 32/32
@@ -818,7 +855,7 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
         
         - testele au fost împărțite în teste funcționale (Equivalence Partitioning, Boundary Value Analysis, Category Partitioning) și teste structurale (Statement și Condition Coverage)
         
-        - mjoritatea mutanților au fost corect detectați de teste, indicând o acoperire bună a cazurilor de eroare și a fluxurilor normale
+        - majoritatea mutanților au fost corect detectați de teste, indicând o acoperire bună a cazurilor de eroare și a fluxurilor normale
         
         - mutanții supraviețuitori au fost în principal modificări asupra literalelor de string folosite în interogările SQL sau mesajele de eroare (console.error), sugerând că testele nu verifică explicit aceste mesaje sau interogări
 
@@ -857,28 +894,25 @@ Aceasta este reprezentată de un handler pentru o cerere HTTP de tip GET, care g
        
        - am validat ordinea și conținutul apelurilor către db.prepare folosind **mock.calls** [3]
 
- ### Rezultate teste functionale
- ![image](https://github.com/user-attachments/assets/5692ca35-209b-418e-b80a-2d5068df0764)
-
 
 ## Bibliografie
-[1] <https://jestjs.io/docs/getting-started>
+[1] <https://jestjs.io/docs/getting-started>, data ultimei accesări: 8 aprilie 2025
 
-[2] <https://www.geeksforgeeks.org/testing-with-jest/>
+[2] <https://www.geeksforgeeks.org/testing-with-jest/>, data ultimei accesări: 8 aprilie 2025
 
-[3] <https://devhints.io/jest>
+[3] <https://devhints.io/jest>, data ultimei accesări: 8 aprilie 2025
 
-[4] <https://www.geeksforgeeks.org/how-to-test-react-components-using-jest/>
+[4] <https://www.geeksforgeeks.org/how-to-test-react-components-using-jest/>, data ultimei accesări: 8 aprilie 2025
 
-[5] <https://medium.com/@dilip.bhaidiya/mastering-react-js-testing-with-jest-a-comprehensive-guide-1acada2b9586>
+[5] <https://medium.com/@dilip.bhaidiya/mastering-react-js-testing-with-jest-a-comprehensive-guide-1acada2b9586>, data ultimei accesări: 8 aprilie 2025
 
-[6] <https://stryker-mutator.io/docs/stryker-js/introduction/>
+[6] <https://stryker-mutator.io/docs/stryker-js/introduction/>, data ultimei accesări: 8 aprilie 2025
 
-[7] <https://yumasoft.pl/how-to-use-strykerjs-with-jest-and-typescript-3/>
+[7] <https://yumasoft.pl/how-to-use-strykerjs-with-jest-and-typescript-3/>, data ultimei accesări: 8 aprilie 2025
 
-[8] <https://jestjs.io/docs/mock-function-api>
+[8] <https://jestjs.io/docs/mock-function-api>, data ultimei accesări: 26 aprilie 2025
 
-[9] <https://www.lambdatest.com/learning-hub/structural-testing>
+[9] <https://www.lambdatest.com/learning-hub/structural-testing>, data ultimei accesări: 26 aprilie 2025
   
 
 

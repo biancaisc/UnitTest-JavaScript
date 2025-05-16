@@ -1,7 +1,7 @@
 // @ts-check
 /** @type {import('@stryker-mutator/api/core').PartialStrykerOptions} */
 const config = {
-  mutate: ['routes/comments.js'],
+  mutate: ["routes/library.js", "routes/reviews.js", "routes/comments.js"],
   _comment:
     "This config was generated using 'stryker init'. Please take a look at: https://stryker-mutator.io/docs/stryker-js/configuration/ for more information.",
   packageManager: "npm",
