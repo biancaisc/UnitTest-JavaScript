@@ -31,10 +31,6 @@ Aplicația oferă funcții de căutare și organizarea cărților pe categorii, 
 
 https://github.com/unibuc-cs/software-engineering-product-code-girls
 
-### Link prezentare 
-
-https://docs.google.com/presentation/d/1Fg_knYKiugL7xvm50S4C8Om7PSmXgIkm9BC8ynlX1ZA/edit?usp=sharing
-
 ### Demo aplicație
 
 [https://www.youtube.com/watch?v=xHe0NP-Zy6](https://www.youtube.com/watch?v=xHe0NP-Zy64)
